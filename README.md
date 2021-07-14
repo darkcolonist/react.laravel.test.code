@@ -63,3 +63,5 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 ## Dev Notes
 Node.js 12.22.3
+
+Followed https://dev.to/sadhakbj/how-to-install-use-reactjs-in-typescript-with-laravel-8-laravel-mix-6-2i0c (warning: some errors to be encountered)
