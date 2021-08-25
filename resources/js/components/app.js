@@ -5,20 +5,24 @@ import { makeStyles, createTheme, ThemeProvider } from '@material-ui/core/styles
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+
+import HomePage from '../pages/home';
+import AboutPage from '../pages/about';
+
 function App() {
   const myTheme = createTheme({
     palette: {
       // type: 'light',
       type: 'dark',
 
-      primary: {
-        // Purple and green play nicely together.
-        main: '#9600aa',
-      },
-      secondary: {
-        // This is green.A700 as hex.
-        main: '#11cb5f',
-      },
+      // primary: {
+      //   // Purple and green play nicely together.
+      //   main: '#9600aa',
+      // },
+      // secondary: {
+      //   // This is green.A700 as hex.
+      //   main: '#11cb5f',
+      // },
 
     },
   });
@@ -32,7 +36,7 @@ function App() {
       textAlign: 'center',
       // color: myTheme.palette.text.secondary,
       // color: myTheme.palette.secondary,
-      color: '#11cb5f',
+      // color: '#11cb5f',
     },
   }));
 
@@ -42,18 +46,6 @@ function App() {
     let path = `newPath`;
     let history = useHistory();
     history.push(path);
-  }
-  
-  function AboutPage(){
-    return (
-      "you are in the about page"
-    )
-  }
-  
-  function HomePage(){
-    return (
-      "home page is here"
-    )
   }
 
   return (
