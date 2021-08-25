@@ -11,9 +11,9 @@ class TopNav extends Component{
     return(
       <div>
 
-        <Button component={NavLink} activeClassName="MuiButton-outlined" exact to="/"><AcUnitIcon /></Button>
-        <Button component={NavLink} activeClassName="MuiButton-outlined" strict to="/home">Home</Button>
-        <Button component={NavLink} activeClassName="MuiButton-outlined" strict to="/about">About</Button>
+        <Button component={NavLink} activeClassName="MuiButton-textPrimary" exact to="/"><AcUnitIcon /></Button>
+        <Button component={NavLink} activeClassName="MuiButton-textPrimary" strict to="/home">Home</Button>
+        <Button component={NavLink} activeClassName="MuiButton-textPrimary" strict to="/about">About</Button>
       </div>
     )
   }
