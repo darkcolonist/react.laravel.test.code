@@ -6,20 +6,33 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 function App() {
-  const darkTheme = createTheme({
+  const myTheme = createTheme({
     palette: {
+      // type: 'light',
       type: 'dark',
+
+      primary: {
+        // Purple and green play nicely together.
+        main: '#9600aa',
+      },
+      secondary: {
+        // This is green.A700 as hex.
+        main: '#11cb5f',
+      },
+
     },
   });
 
-  const useStyles = makeStyles((darkTheme) => ({
+  const useStyles = makeStyles((myTheme) => ({
     root: {
       flexGrow: 1,
     },
     paper: {
-      padding: darkTheme.spacing(2),
+      padding: myTheme.spacing(2),
       textAlign: 'center',
-      color: darkTheme.palette.text.secondary,
+      // color: myTheme.palette.text.secondary,
+      // color: myTheme.palette.secondary,
+      color: '#11cb5f',
     },
   }));
 
@@ -44,7 +57,7 @@ function App() {
   }
 
   return (
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={myTheme}>
       <CssBaseline />
       <BrowserRouter>
         <Button component={Link} to="/home">Home</Button>
@@ -58,7 +71,7 @@ function App() {
             <Paper className={classes.paper}>xs=6</Paper>
           </Grid>
           <Grid item xs={6}>
-            <Paper className={classes.paper}>
+            <Paper className={classes.paper} color="secondary">
               <Switch>
                 <Route exact path="/about" component={AboutPage} />
                 <Route exact path="/home" component={HomePage} />

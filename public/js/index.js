@@ -6245,20 +6245,31 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function App() {
-  var darkTheme = (0,_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_2__.default)({
+  var myTheme = (0,_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_2__.default)({
     palette: {
-      type: 'dark'
+      // type: 'light',
+      type: 'dark',
+      primary: {
+        // Purple and green play nicely together.
+        main: '#9600aa'
+      },
+      secondary: {
+        // This is green.A700 as hex.
+        main: '#11cb5f'
+      }
     }
   });
-  var useStyles = (0,_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_3__.default)(function (darkTheme) {
+  var useStyles = (0,_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_3__.default)(function (myTheme) {
     return {
       root: {
         flexGrow: 1
       },
       paper: {
-        padding: darkTheme.spacing(2),
+        padding: myTheme.spacing(2),
         textAlign: 'center',
-        color: darkTheme.palette.text.secondary
+        // color: myTheme.palette.text.secondary,
+        // color: myTheme.palette.secondary,
+        color: '#11cb5f'
       }
     };
   });
@@ -6279,7 +6290,7 @@ function App() {
   }
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_5__.default, {
-    theme: darkTheme,
+    theme: myTheme,
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_material_ui_core_CssBaseline__WEBPACK_IMPORTED_MODULE_6__.default, {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.BrowserRouter, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_material_ui_core__WEBPACK_IMPORTED_MODULE_8__.default, {
         component: react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Link,
@@ -6311,6 +6322,7 @@ function App() {
           xs: 6,
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_10__.default, {
             className: classes.paper,
+            color: "secondary",
             children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Switch, {
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
                 exact: true,
