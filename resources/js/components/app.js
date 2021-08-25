@@ -1,5 +1,5 @@
 import { React, Component } from 'react';
-import { BrowserRouter, Link, useHistory } from "react-router-dom";
+import { BrowserRouter, Link, Route, Switch, useHistory } from "react-router-dom";
 import { Button } from '@material-ui/core';
 import { makeStyles, createTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -31,42 +31,55 @@ function App() {
     history.push(path);
   }
   
+  function AboutPage(){
+    return (
+      "you are in the about page"
+    )
+  }
+  
+  function HomePage(){
+    return (
+      "home page is here"
+    )
+  }
+
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      {/* <Routes */}
       <BrowserRouter>
-        <Link to="/home">Home</Link>
-        <Link to="/somewhere">clickme</Link>
-        <Link to="/somewhere">clickme</Link>
+        <Button component={Link} to="/home">Home</Button>
+        <Button component={Link} to="/about">About</Button>
+
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Paper className={classes.paper}>xs=12</Paper>
+          </Grid>
+          <Grid item xs={6}>
+            <Paper className={classes.paper}>xs=6</Paper>
+          </Grid>
+          <Grid item xs={6}>
+            <Paper className={classes.paper}>
+              <Switch>
+                <Route exact path="/about" component={AboutPage} />
+                <Route exact path="/home" component={HomePage} />
+                <Route exact path="/">nothing to see here lmao</Route>
+              </Switch>
+            </Paper>
+          </Grid>
+          <Grid item xs={3}>
+            <Paper className={classes.paper}>xs=3</Paper>
+          </Grid>
+          <Grid item xs={3}>
+            <Paper className={classes.paper}>xs=3</Paper>
+          </Grid>
+          <Grid item xs={3}>
+            <Paper className={classes.paper}>xs=3</Paper>
+          </Grid>
+          <Grid item xs={3}>
+            <Paper className={classes.paper}>xs=3</Paper>
+          </Grid>
+        </Grid>
       </BrowserRouter>
-      <Button onClick={routeChange}>Home</Button>
-      <Button>About</Button>
-
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Paper className={classes.paper}>xs=12</Paper>
-        </Grid>
-        <Grid item xs={6}>
-          <Paper className={classes.paper}>xs=6</Paper>
-        </Grid>
-        <Grid item xs={6}>
-          <Paper className={classes.paper}>xs=6</Paper>
-        </Grid>
-        <Grid item xs={3}>
-          <Paper className={classes.paper}>xs=3</Paper>
-        </Grid>
-        <Grid item xs={3}>
-          <Paper className={classes.paper}>xs=3</Paper>
-        </Grid>
-        <Grid item xs={3}>
-          <Paper className={classes.paper}>xs=3</Paper>
-        </Grid>
-        <Grid item xs={3}>
-          <Paper className={classes.paper}>xs=3</Paper>
-        </Grid>
-      </Grid>
-
     </ThemeProvider>
   );
 }
