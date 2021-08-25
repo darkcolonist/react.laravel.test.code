@@ -10,6 +10,7 @@ import AcUnitIcon from '@material-ui/icons/AcUnit';
 import HomePage from '../pages/home';
 import AboutPage from '../pages/about';
 import TopNav from './TopNav';
+import UsersPage from '../pages/users';
 
 function App() {
   const myTheme = createTheme({
@@ -68,6 +69,7 @@ function App() {
               <Switch>
                 <Route path="/about" component={AboutPage} />
                 <Route path="/home" component={HomePage} />
+                <Route path="/users" component={UsersPage} />
                 <Route path="/">nothing to see here lmao</Route>
               </Switch>
             </Paper>
