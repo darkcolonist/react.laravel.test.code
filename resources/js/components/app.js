@@ -5,9 +5,11 @@ import { makeStyles, createTheme, ThemeProvider } from '@material-ui/core/styles
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import AcUnitIcon from '@material-ui/icons/AcUnit';
 
 import HomePage from '../pages/home';
 import AboutPage from '../pages/about';
+import TopNav from './TopNav';
 
 function App() {
   const myTheme = createTheme({
@@ -15,10 +17,10 @@ function App() {
       // type: 'light',
       type: 'dark',
 
-      // primary: {
-      //   // Purple and green play nicely together.
-      //   main: '#9600aa',
-      // },
+      primary: {
+        // Purple and green play nicely together.
+        main: '#00b599',
+      },
       // secondary: {
       //   // This is green.A700 as hex.
       //   main: '#11cb5f',
@@ -52,8 +54,7 @@ function App() {
     <ThemeProvider theme={myTheme}>
       <CssBaseline />
       <BrowserRouter>
-        <Button component={Link} to="/home">Home</Button>
-        <Button component={Link} to="/about">About</Button>
+        <TopNav classes={classes} />
 
         <Grid container spacing={3}>
           <Grid item xs={12}>
@@ -65,9 +66,9 @@ function App() {
           <Grid item xs={6}>
             <Paper className={classes.paper} color="secondary">
               <Switch>
-                <Route exact path="/about" component={AboutPage} />
-                <Route exact path="/home" component={HomePage} />
-                <Route exact path="/">nothing to see here lmao</Route>
+                <Route path="/about" component={AboutPage} />
+                <Route path="/home" component={HomePage} />
+                <Route path="/">nothing to see here lmao</Route>
               </Switch>
             </Paper>
           </Grid>
@@ -82,6 +83,14 @@ function App() {
           </Grid>
           <Grid item xs={3}>
             <Paper className={classes.paper}>xs=3</Paper>
+          </Grid>
+
+          <Grid item xs={2}>
+            <Paper className={classes.paper}>page left nav go here</Paper>
+          </Grid>
+
+          <Grid item xs={10}>
+            <Paper className={classes.paper}>page content go here</Paper>
           </Grid>
         </Grid>
       </BrowserRouter>
