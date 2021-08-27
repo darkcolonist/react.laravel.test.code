@@ -5,12 +5,12 @@ import { makeStyles, createTheme, ThemeProvider } from '@material-ui/core/styles
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import AcUnitIcon from '@material-ui/icons/AcUnit';
 
 import HomePage from '../pages/home';
 import AboutPage from '../pages/about';
 import TopNav from './TopNav';
 import UsersPage from '../pages/users';
+import AdminPanelsContainer from '../layouts/AdminPanelsContainer';
 
 function App() {
   const myTheme = createTheme({
@@ -87,13 +87,7 @@ function App() {
             <Paper className={classes.paper}>xs=3</Paper>
           </Grid>
 
-          <Grid item xs={2}>
-            <Paper className={classes.paper}>page left nav go here</Paper>
-          </Grid>
-
-          <Grid item xs={10}>
-            <Paper className={classes.paper}>page content go here</Paper>
-          </Grid>
+          <AdminPanelsContainer classes={classes} />
         </Grid>
       </BrowserRouter>
     </ThemeProvider>
