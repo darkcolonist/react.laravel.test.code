@@ -15,6 +15,7 @@ class TopNav extends Component{
         <Button component={NavLink} activeClassName="MuiButton-textPrimary" strict to="/home">Home</Button>
         <Button component={NavLink} activeClassName="MuiButton-textPrimary" strict to="/about">About</Button>
         <Button component={NavLink} activeClassName="MuiButton-textPrimary" strict to="/users">Users</Button>
+        <Button component={NavLink} activeClassName="MuiButton-textPrimary" strict to="/admin">Administration</Button>
       </div>
     )
   }

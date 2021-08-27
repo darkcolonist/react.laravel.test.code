@@ -87,8 +87,13 @@ function App() {
             <Paper className={classes.paper}>xs=3</Paper>
           </Grid>
         </Grid>
-        
-        <AdminPanelsContainer classes={classes} />
+
+        <Switch>
+          <Route path="/admin">
+            <AdminPanelsContainer classes={classes} />
+          </Route>
+        </Switch>
+
       </BrowserRouter>
     </ThemeProvider>
   );
