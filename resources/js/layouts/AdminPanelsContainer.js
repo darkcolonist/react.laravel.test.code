@@ -7,7 +7,7 @@ class AdminPanelsContainer extends Component{
     const { classes } = this.props;
 
     return (
-      <div>
+      <Grid container spacing={3}>
         <Grid item xs={2}>
           <Paper className={classes.paper}>page left nav go here</Paper>
         </Grid>
@@ -15,7 +15,7 @@ class AdminPanelsContainer extends Component{
         <Grid item xs={10}>
           <Paper className={classes.paper}>page content go here</Paper>
         </Grid>
-      </div>
+      </Grid>
     )
   }
 }

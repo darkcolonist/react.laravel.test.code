@@ -86,9 +86,9 @@ function App() {
           <Grid item xs={3}>
             <Paper className={classes.paper}>xs=3</Paper>
           </Grid>
-
-          <AdminPanelsContainer classes={classes} />
         </Grid>
+        
+        <AdminPanelsContainer classes={classes} />
       </BrowserRouter>
     </ThemeProvider>
   );
