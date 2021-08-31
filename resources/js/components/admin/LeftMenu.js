@@ -7,7 +7,7 @@ class LeftMenu extends Component{
     return (
       <MenuList>
         <MenuItem component={NavLink} to="/admin/none">Load Nothing</MenuItem>
-        <MenuItem component={NavLink} to="/admin/load">Load Users</MenuItem>
+        <MenuItem component={NavLink} to="/admin/users">Load Users</MenuItem>
       </MenuList>
     )
   }

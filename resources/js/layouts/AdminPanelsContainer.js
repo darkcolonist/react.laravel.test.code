@@ -3,6 +3,8 @@ import Grid from '@material-ui/core/Grid';
 import { Component } from "react";
 import { MenuItem, MenuList } from '@material-ui/core';
 import LeftMenu from '../components/admin/LeftMenu';
+import { Route, Switch } from 'react-router-dom';
+import UsersSection from '../components/admin/UsersSection';
 
 class AdminPanelsContainer extends Component{
   render(){
@@ -17,7 +19,19 @@ class AdminPanelsContainer extends Component{
         </Grid>
 
         <Grid item xs={10}>
-          <Paper className={classes.paper}>page content go here</Paper>
+          <Paper className={classes.paper}>
+            <Switch>
+              <Route path="/admin/users">
+                <UsersSection />
+              </Route>
+              <Route exact path="/admin">
+                starting admin landing page
+              </Route>
+              <Route>
+                non-existent page
+              </Route>
+            </Switch>
+          </Paper>
         </Grid>
       </Grid>
     )
