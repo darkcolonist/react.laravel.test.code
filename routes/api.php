@@ -19,8 +19,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
   return $request->user();
 });
 
+Route::match(array('PUT', 'PATCH'), "/things/{id}", function(Request $request){
+  return [
+    "code" => 0,
+    "message" => "done nothing, but assuming success",
+    "dump" => $request->all()
+  ];
+});
+
 Route::get("/test/users", function(){
-  sleep(5);
+  // sleep(5); // for loader testing
   return [
     "code" => 0,
     "hash" => Str::random(rand(24,32)),

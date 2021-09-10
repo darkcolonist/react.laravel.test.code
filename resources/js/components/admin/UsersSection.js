@@ -2,6 +2,7 @@ import { Component } from "react";
 import { MenuItem, MenuList } from '@material-ui/core';
 import { NavLink } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
+import DataTableOptionButtons from "./DataTableOptionButtons";
 
 class UsersSection extends Component{
   constructor(props){
@@ -49,10 +50,23 @@ class UsersSection extends Component{
       {
         "name": "last_name",
         "label": "Last Name"
-      },
+      }, 
       {
         "name": "email",
         "label": "E-Mail Address"
+      }, 
+      {
+        "name": "Options",
+        "options": {
+          filter: true,
+          sort: false,
+          empty: true,
+          customBodyRender: (value, tableMeta, updateValue) => {
+            return (
+              <DataTableOptionButtons theData={tableMeta} />
+            );
+          }
+        }
       }
     ];
 
