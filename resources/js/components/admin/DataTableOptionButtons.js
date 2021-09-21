@@ -6,7 +6,9 @@ class DataTableOptionButtons extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalOpen: false
+      modalOpen: false,
+      dataLoaded: false,
+      currentHash: null
     }
 
     this.style = {
@@ -22,18 +24,38 @@ class DataTableOptionButtons extends Component {
     };
   }
 
-  handleEditClick = () => {
-    this.setState({ modalOpen: true })
+  handleEditClick = (e, itemHash) => {
+    this.setState({ modalOpen: true });
+    
+    /**
+     * simulate ajax call
+     */
+    setTimeout(() => {
+      this.setState({ 
+        dataLoaded: true,
+        currentHash: itemHash 
+      });
+    }, 1000);
   }
 
   handleClose = () => {
-    this.setState({ modalOpen: false })
+    this.setState({ 
+      modalOpen: false,
+      dataLoaded: false,
+      currentHash: null
+    })
   }
 
   render() {
+    let modalContent
+    if(this.state.dataLoaded)
+      modalContent = "yep:"+this.state.currentHash;
+    else
+      modalContent = "nah";
+
     return (
       <div class="DataTableOptionButtons">
-        <IconButton title="edit" onClick={this.handleEditClick}><Edit /></IconButton>
+        <IconButton title="edit" onClick={(e) => this.handleEditClick(e, this.props.theData.rowData[0])}><Edit /></IconButton>
         <IconButton title="delete" onClick={() => {
           window.alert("attempting to delete "+this.props.theData.rowData[0]);
           }}><Delete /></IconButton>
@@ -45,7 +67,7 @@ class DataTableOptionButtons extends Component {
         >
           <Box sx={this.style}>
             <Typography id="modal-modal-title" variant="h6" component="h2">
-              Text in a modal
+              Text in a modal: {modalContent}
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
               Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
