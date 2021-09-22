@@ -8,6 +8,7 @@ class DataTableOptionButtons extends Component {
     this.state = {
       modalOpen: false,
       dataLoaded: false,
+      dataObj: null,
       currentHash: null
     }
 
@@ -27,15 +28,26 @@ class DataTableOptionButtons extends Component {
   handleEditClick = (e, itemHash) => {
     this.setState({ modalOpen: true });
     
-    /**
-     * simulate ajax call
-     */
-    setTimeout(() => {
-      this.setState({ 
-        dataLoaded: true,
-        currentHash: itemHash 
-      });
-    }, 1000);
+    fetch("/api/test/users/"+itemHash)
+      .then(res => res.json())
+      .then(
+        (result) => {
+          this.setState({
+            dataLoaded: true,
+            currentHash: itemHash,
+            dataObj: result.data
+          });
+        },
+        // Note: it's important to handle errors here
+        // instead of a catch() block so that we don't swallow
+        // exceptions from actual bugs in components.
+        (error) => {
+          this.setState({
+            dataLoaded: true,
+            error
+          });
+        }
+      )
   }
 
   handleClose = () => {
@@ -47,9 +59,12 @@ class DataTableOptionButtons extends Component {
   }
 
   render() {
-    let modalContent
-    if(this.state.dataLoaded)
+    let modalContent;
+    let modalContent2;
+    if(this.state.dataLoaded){
       modalContent = "yep:"+this.state.currentHash;
+      modalContent2 = "you are viewing: "+this.state.dataObj.email;
+    }
     else
       modalContent = "nah";
 
@@ -59,6 +74,7 @@ class DataTableOptionButtons extends Component {
         <IconButton title="delete" onClick={() => {
           window.alert("attempting to delete "+this.props.theData.rowData[0]);
           }}><Delete /></IconButton>
+
         <Modal
           open={this.state.modalOpen}
           onClose={this.handleClose}
@@ -70,7 +86,7 @@ class DataTableOptionButtons extends Component {
               Text in a modal: {modalContent}
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+              {modalContent2}
             </Typography>
           </Box>
         </Modal>
