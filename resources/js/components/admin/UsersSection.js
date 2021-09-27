@@ -2,6 +2,7 @@ import { Component } from "react";
 import MUIDataTable from "mui-datatables";
 import DataTableOptionButtons from "./DataTableOptionButtons";
 import MyAjaxModal from "../MyAjaxModal";
+import EditUserForm from "./EditUserForm";
 
 class UsersSection extends Component{
   constructor(props){
@@ -104,7 +105,6 @@ class UsersSection extends Component{
     if(isLoaded){
       return (
         <div>
-          {(this.state.modalOpen ? "modal open" : "modal closed")}
           <MUIDataTable
             title={"Employee List"}
             data={data}
@@ -115,6 +115,7 @@ class UsersSection extends Component{
             open={this.state.myModalProps.open}
             onClose={this.modalOnClose}
             datasource={this.state.myModalProps.datasource}
+            content={<EditUserForm />}
           />
         </div>
       )

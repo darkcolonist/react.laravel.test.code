@@ -61,6 +61,7 @@ class MyAjaxModal extends Component {
   render() {
     let modalContent = "sample 1";
     let modalContent2 = "sample 2";
+    // let content = this.props.content;
     // let modalContent2;
     // if (this.state.dataLoaded) {
     //   modalContent = "yep:" + this.state.currentHash;
@@ -84,6 +85,7 @@ class MyAjaxModal extends Component {
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
               {modalContent2}
             </Typography>
+            {this.props.content}
           </Box>
         </Modal>
       </div>
