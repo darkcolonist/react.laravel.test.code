@@ -1,13 +1,16 @@
 import { Component } from "react";
-import { MenuItem, MenuList } from '@material-ui/core';
-import { NavLink } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import DataTableOptionButtons from "./DataTableOptionButtons";
+import MyAjaxModal from "../MyAjaxModal";
 
 class UsersSection extends Component{
   constructor(props){
     super(props);
     this.state = {
+      myModalProps: {
+        open: false,
+        datasource: null,
+      },
       error: null,
       isLoaded: false,
       items: []
@@ -36,8 +39,29 @@ class UsersSection extends Component{
       )
   }
 
+  editButtonClicked = (args) => {
+    this.setState({
+      myModalProps: {
+        ...this.state.myModalProps,
+        open: true,
+        datasource: args.datasource
+      }
+    });
+  }
+
+  modalOnClose = () => {
+    this.setState({
+      myModalProps: {
+        ...this.state.myModalProps,
+        open: false,
+        datasource: null
+      }
+    });
+  }
+
   render(){
     const { error, isLoaded, items } = this.state;
+    var parentState = this.state;
     const columns = [
       {
         "name": "hash",
@@ -63,7 +87,10 @@ class UsersSection extends Component{
           empty: true,
           customBodyRender: (value, tableMeta, updateValue) => {
             return (
-              <DataTableOptionButtons theData={tableMeta} />
+              <DataTableOptionButtons 
+                theData={tableMeta} 
+                editButtonClicked={this.editButtonClicked}
+              />
             );
           }
         }
@@ -76,12 +103,20 @@ class UsersSection extends Component{
     };
     if(isLoaded){
       return (
-        <MUIDataTable
-          title={"Employee List"}
-          data={data}
-          columns={columns}
-          options={options}
-        />
+        <div>
+          {(this.state.modalOpen ? "modal open" : "modal closed")}
+          <MUIDataTable
+            title={"Employee List"}
+            data={data}
+            columns={columns}
+            options={options}
+          />
+          <MyAjaxModal 
+            open={this.state.myModalProps.open}
+            onClose={this.modalOnClose}
+            datasource={this.state.myModalProps.datasource}
+          />
+        </div>
       )
     }else{
       return "please wait, loading your data...";
