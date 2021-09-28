@@ -1,4 +1,4 @@
-import { Box, IconButton } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
 import { Edit, Delete } from "@material-ui/icons";
 import { Component } from "react";
 
@@ -27,38 +27,25 @@ class DataTableOptionButtons extends Component {
     };
   }
 
-  handleEditClick = (e, itemHash) => {
-    
+  handleEditClick = (e) => {
     this.props.editButtonClicked({
-      datasource: "/api/test/users/" + itemHash
+      datasource: this.props.editDatasource,
+      title: this.props.editTitle
     });
-    
   }
 
-  handleClose = () => {
-    this.setState({ 
-      modalOpen: false,
-      dataLoaded: false,
-      currentHash: null
-    })
+  handleDeleteClick = (e) => {
+    this.props.deleteButtonClicked({
+      datasource: this.props.deleteDatasource,
+      title: this.props.deleteTitle
+    });
   }
 
   render() {
-    let modalContent;
-    let modalContent2;
-    if(this.state.dataLoaded){
-      modalContent = "yep:"+this.state.currentHash;
-      modalContent2 = "you are viewing: "+this.state.dataObj.email;
-    }
-    else
-      modalContent = "nah";
-
     return (
       <div class="DataTableOptionButtons">
-        <IconButton title="edit" onClick={(e) => this.handleEditClick(e, this.props.theData.rowData[0])}><Edit /></IconButton>
-        <IconButton title="delete" onClick={() => {
-          window.alert("attempting to delete "+this.props.theData.rowData[0]);
-          }}><Delete /></IconButton>
+        <IconButton title={this.props.editTitle} onClick={this.handleEditClick}><Edit /></IconButton>
+        <IconButton title={this.props.deleteTitle} onClick={this.handleDeleteClick}><Delete /></IconButton>
       </div>
     );
   }

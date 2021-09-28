@@ -79,9 +79,7 @@ class MyAjaxModal extends Component {
           aria-describedby="modal-modal-description"
         >
           <Box sx={this.style}>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              Text in a modal: {modalContent}
-            </Typography>
+            <Typography id="modal-modal-title" variant="h6" component="h2">{this.props.title}</Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
               {modalContent2}
             </Typography>

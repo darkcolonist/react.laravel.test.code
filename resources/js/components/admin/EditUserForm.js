@@ -1,4 +1,4 @@
-import { FormControl, FormHelperText, Input, InputLabel } from "@material-ui/core";
+import { FormControl, FormHelperText, Input, InputLabel, TextField } from "@material-ui/core";
 import { Component } from "react";
 
 class EditUserForm extends Component {
@@ -21,9 +21,12 @@ class EditUserForm extends Component {
   render() {
     return (
       <FormControl>
-        <InputLabel htmlFor="my-input">Email address</InputLabel>
-        <Input id="my-input" aria-describedby="my-helper-text" />
-        <FormHelperText id="my-helper-text">We'll never share your email.</FormHelperText>
+        <TextField
+          required
+          id="txtFirstName"
+          label="First Name"
+          helperText="this is required"
+        />
       </FormControl>
     );
   }

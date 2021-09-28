@@ -45,9 +45,22 @@ class UsersSection extends Component{
       myModalProps: {
         ...this.state.myModalProps,
         open: true,
-        datasource: args.datasource
+        datasource: args.datasource,
+        title: args.title
       }
     });
+  }
+
+  deleteButtonClicked = (args) => {
+    console.log("delete button clicked", args)
+    // this.setState({
+    //   myModalProps: {
+    //     ...this.state.myModalProps,
+    //     open: true,
+    //     datasource: args.datasource,
+    //     title: args.title
+    //   }
+    // });
   }
 
   modalOnClose = () => {
@@ -90,7 +103,12 @@ class UsersSection extends Component{
             return (
               <DataTableOptionButtons 
                 theData={tableMeta} 
-                editButtonClicked={this.editButtonClicked}
+                editTitle={"editing " + tableMeta.rowData[1] + " " + tableMeta.rowData[2]}
+                editDatasource={"/api/test/users/" + tableMeta.rowData[0]}
+                editButtonClicked={this.editButtonClicked} 
+                deleteTitle={"deleting " + tableMeta.rowData[1] + " " + tableMeta.rowData[2]}
+                deleteDatasource={"/api/test/users/" + tableMeta.rowData[0]}
+                deleteButtonClicked={this.deleteButtonClicked}
               />
             );
           }
@@ -115,6 +133,7 @@ class UsersSection extends Component{
             open={this.state.myModalProps.open}
             onClose={this.modalOnClose}
             datasource={this.state.myModalProps.datasource}
+            title={this.state.myModalProps.title}
             content={<EditUserForm />}
           />
         </div>

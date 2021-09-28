@@ -14,6 +14,12 @@ import AdminPanelsContainer from '../layouts/AdminPanelsContainer';
 
 function App() {
   const myTheme = createTheme({
+    props: {
+      MuiTextField: {
+        variant: "outlined"
+      }
+    },
+
     palette: {
       // type: 'light',
       type: 'dark',
