@@ -11,6 +11,7 @@ class UsersSection extends Component{
       myModalProps: {
         open: false,
         datasource: null,
+        componentData: {}
       },
       error: null,
       isLoaded: false,
@@ -64,11 +65,25 @@ class UsersSection extends Component{
   }
 
   modalOnClose = () => {
+    // console.log("userssection", "modal closed");
+
     this.setState({
       myModalProps: {
         ...this.state.myModalProps,
         open: false,
-        datasource: null
+        datasource: null,
+        componentData: {}
+      }
+    });
+  }
+
+  modalDataLoaded = (componentData) => {
+    // console.log("modal completed loading...", componentData)
+
+    this.setState({
+      myModalProps: {
+        ...this.state.myModalProps,
+        componentData
       }
     });
   }
@@ -132,9 +147,12 @@ class UsersSection extends Component{
           <MyAjaxModal 
             open={this.state.myModalProps.open}
             onClose={this.modalOnClose}
+            modalDataLoaded={this.modalDataLoaded}
             datasource={this.state.myModalProps.datasource}
             title={this.state.myModalProps.title}
-            content={<EditUserForm />}
+            content={
+              <EditUserForm componentData={this.state.myModalProps.componentData}/>
+            }
           />
         </div>
       )

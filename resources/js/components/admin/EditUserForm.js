@@ -5,9 +5,9 @@ class EditUserForm extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      data: null
-    }
+    // this.state = {
+    //   data: null
+    // }
   }
 
   componentDidMount() {
@@ -26,6 +26,7 @@ class EditUserForm extends Component {
           id="txtFirstName"
           label="First Name"
           helperText="this is required"
+          value={this.props.componentData.first_name}
         />
       </FormControl>
     );

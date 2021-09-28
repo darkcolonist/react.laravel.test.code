@@ -1,4 +1,4 @@
-import { Box, IconButton, Modal, Typography } from "@material-ui/core";
+import { Box, IconButton, LinearProgress, Modal, Typography } from "@material-ui/core";
 import { Component } from "react";
 
 class MyAjaxModal extends Component {
@@ -29,6 +29,19 @@ class MyAjaxModal extends Component {
     
   }
 
+  componentWillUnmount(){
+    
+  }
+
+  modalClose = () => {
+    this.setState({
+      dataLoaded: false,
+      dataObj: null
+    });
+
+    this.props.onClose();
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if(this.props.open !== prevProps.open 
       && this.props.open){
@@ -37,6 +50,8 @@ class MyAjaxModal extends Component {
   }
 
   loadData(datasource){
+    let modalDataLoaded = this.props.modalDataLoaded;
+
     fetch(datasource)
       .then(res => res.json())
       .then(
@@ -45,6 +60,8 @@ class MyAjaxModal extends Component {
             dataLoaded: true,
             dataObj: result.data
           });
+
+          modalDataLoaded(result.data);
         },
         // Note: it's important to handle errors here
         // instead of a catch() block so that we don't swallow
@@ -59,31 +76,17 @@ class MyAjaxModal extends Component {
   }
 
   render() {
-    let modalContent = "sample 1";
-    let modalContent2 = "sample 2";
-    // let content = this.props.content;
-    // let modalContent2;
-    // if (this.state.dataLoaded) {
-    //   modalContent = "yep:" + this.state.currentHash;
-    //   modalContent2 = "you are viewing: " + this.state.dataObj.email;
-    // }
-    // else
-    //   modalContent = "nah";
-
     return (
       <div class="MyAjaxModal">
         <Modal
           open={this.props.open}
-          onClose={this.props.onClose}
+          onClose={this.modalClose}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
           <Box sx={this.style}>
             <Typography id="modal-modal-title" variant="h6" component="h2">{this.props.title}</Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              {modalContent2}
-            </Typography>
-            {this.props.content}
+            {this.state.dataLoaded ? this.props.content : <LinearProgress />}
           </Box>
         </Modal>
       </div>
