@@ -94,7 +94,10 @@ class UsersSection extends Component{
     const columns = [
       {
         "name": "hash",
-        "label": "HASH"
+        "label": "HASH",
+        "options": {
+          "display": false
+        }
       },
       {
         "name": "first_name",
@@ -118,7 +121,7 @@ class UsersSection extends Component{
             return (
               <DataTableOptionButtons 
                 theData={tableMeta} 
-                editTitle={"editing " + tableMeta.rowData[1] + " " + tableMeta.rowData[2]}
+                editTitle={"edit " + tableMeta.rowData[1] + " " + tableMeta.rowData[2]}
                 editDatasource={"/api/test/users/" + tableMeta.rowData[0]}
                 editButtonClicked={this.editButtonClicked} 
                 deleteTitle={"deleting " + tableMeta.rowData[1] + " " + tableMeta.rowData[2]}

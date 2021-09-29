@@ -41,7 +41,7 @@ Route::get("/test/users", function(){
 });
 
 Route::get('/test/users/{hash}', function($hash){
-  sleep(2);
+  // sleep(.5);
   $userCols = ["hash","first_name","last_name","email","password"];
   $user = DB::table("users")
     ->select($userCols)

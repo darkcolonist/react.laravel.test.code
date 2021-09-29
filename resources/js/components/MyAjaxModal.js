@@ -1,4 +1,8 @@
-import { Box, IconButton, LinearProgress, Modal, Typography } from "@material-ui/core";
+import { Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  LinearProgress } from "@material-ui/core";
 import { Component } from "react";
 
 class MyAjaxModal extends Component {
@@ -11,18 +15,6 @@ class MyAjaxModal extends Component {
       open: props.open,
       datasource: props.datasource
     }
-
-    this.style = {
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      width: 400,
-      bgcolor: 'background.paper',
-      border: '2px solid #000',
-      boxShadow: 24,
-      p: 4,
-    };
   }
 
   componentDidMount() {
@@ -78,17 +70,16 @@ class MyAjaxModal extends Component {
   render() {
     return (
       <div class="MyAjaxModal">
-        <Modal
+        <Dialog
           open={this.props.open}
           onClose={this.modalClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={this.style}>
-            <Typography id="modal-modal-title" variant="h6" component="h2">{this.props.title}</Typography>
+          fullWidth={true}>
+          
+          <DialogTitle>{this.props.title}</DialogTitle>
+          <DialogContent>
             {this.state.dataLoaded ? this.props.content : <LinearProgress />}
-          </Box>
-        </Modal>
+          </DialogContent>
+        </Dialog>
       </div>
     );
   }
