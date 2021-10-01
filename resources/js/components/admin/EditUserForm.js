@@ -14,7 +14,8 @@ const defaultState = {
   },
   busy: false,
   notify: false,
-  notifyMessage: ""
+  notifyMessage: "",
+  notifySeverity: "info"
 };
 
 class EditUserForm extends Component {
@@ -77,7 +78,7 @@ class EditUserForm extends Component {
     this.setState({
       busy: false,
       notify: true,
-      notifyMessage: "save complete!"
+      notifyMessage: this.state.componentData.first_name + " has been updated."
     });
   }
 
@@ -142,6 +143,7 @@ class EditUserForm extends Component {
               open={this.state.notify}
               message={this.state.notifyMessage}
               onClose={this.notifyClosed}
+              severity={this.state.notifySeverity}
             />
           </Grid>
           <Grid item xs={8}></Grid>

@@ -42,7 +42,7 @@ Route::get("/test/users", function(){
 
 Route::get('/test/users/{hash}', function($hash){
   // sleep(.5);
-  $userCols = ["hash","first_name","last_name","email","password"];
+  $userCols = ["hash","first_name","last_name","email"];
   $user = DB::table("users")
     ->select($userCols)
     ->where("hash", $hash)
