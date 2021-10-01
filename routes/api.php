@@ -62,6 +62,14 @@ Route::get('/test/users/{hash}', function($hash){
 });
 
 Route::put('/test/users/{hash}', function(Request $request, $hash){
+  sleep(2);
+  $debugCode = 202;
+  return response([
+    "code" => $debugCode,
+    "message" => "not yet implemented",
+    "request" => $request->all()
+  ], $debugCode);
+
   $affected = DB::table("users")
     ->where("hash", $hash)
     ->update($request->all());

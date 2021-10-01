@@ -77,6 +77,10 @@ class UsersSection extends Component{
     });
   }
 
+  editSuccess = (args) => {
+    console.log("userssection", "save success", args);
+  }
+
   modalDataLoaded = (componentData) => {
     // console.log("modal completed loading...", componentData)
 
@@ -154,7 +158,10 @@ class UsersSection extends Component{
             datasource={this.state.myModalProps.datasource}
             title={this.state.myModalProps.title}
             content={
-              <EditUserForm componentData={this.state.myModalProps.componentData}/>
+              <EditUserForm componentData={this.state.myModalProps.componentData}
+                editSuccess={this.editSuccess}
+                close={this.modalOnClose}
+              />
             }
           />
         </div>
