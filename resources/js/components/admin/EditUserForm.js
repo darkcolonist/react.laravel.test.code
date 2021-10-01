@@ -3,6 +3,7 @@ import { Button, FormControl, Grid, TextField } from "@material-ui/core";
 import { Cancel, Save } from "@material-ui/icons";
 import { Component } from "react";
 import api from "../../helpers/apisauce";
+import MySnackbar from "../../helpers/mysnackbar";
 
 const defaultState = {
   componentData: {
@@ -11,7 +12,9 @@ const defaultState = {
     email: "",
     hash: ""
   },
-  busy: false
+  busy: false,
+  notify: false,
+  notifyMessage: ""
 };
 
 class EditUserForm extends Component {
@@ -66,7 +69,9 @@ class EditUserForm extends Component {
     console.log("saved", this.state.componentData, "into", "/api/test/users", response)
 
     this.setState({
-      busy: false
+      busy: false,
+      notify: true,
+      notifyMessage: "save complete!"
     });
   }
 
@@ -124,7 +129,14 @@ class EditUserForm extends Component {
           </Grid>
 
 
-          <Grid item xs={12}>{busyIndicator}</Grid>
+          <Grid item xs={12}>
+            {busyIndicator}
+
+            <MySnackbar
+              open={this.state.notify}
+              message={this.state.notifyMessage}
+            />
+          </Grid>
           <Grid item xs={8}></Grid>
           <Grid item xs={2}><Button 
             onClick={this.saveCommand}
