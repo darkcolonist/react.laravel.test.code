@@ -87,12 +87,29 @@ class EditUserForm extends Component {
     this.setState({ ...defaultState });
   }
 
+  getBusyIndicator(){
+    let theIndicator = "";
+
+    if(this.state.busy){
+      theIndicator = <LinearProgress color="secondary" />
+    }
+
+    return theIndicator;
+  }
+
   render() {
-    let busyIndicator = (this.state.busy) ? <LinearProgress /> : "";
+    let busyIndicator = this.getBusyIndicator();
 
     return (
       <FormControl>
+        <MySnackbar
+          open={this.state.notify}
+          message={this.state.notifyMessage}
+          onClose={this.notifyClosed}
+          severity={this.state.notifySeverity}
+        />
         <Grid container spacing={2}>
+          <Grid item xs={12}>{busyIndicator}</Grid>
           <Grid item xs={12}>
             <TextField
               name="hash"
@@ -135,19 +152,10 @@ class EditUserForm extends Component {
             />
           </Grid>
 
-
-          <Grid item xs={12}>
-            {busyIndicator}
-
-            <MySnackbar
-              open={this.state.notify}
-              message={this.state.notifyMessage}
-              onClose={this.notifyClosed}
-              severity={this.state.notifySeverity}
-            />
-          </Grid>
+          <Grid item xs={12} />
           <Grid item xs={8}></Grid>
-          <Grid item xs={2}><Button 
+          <Grid item xs={2}>
+            <Button 
             onClick={this.saveCommand}
             disabled={this.state.busy}
             ><Save />&nbsp;Save</Button></Grid>
