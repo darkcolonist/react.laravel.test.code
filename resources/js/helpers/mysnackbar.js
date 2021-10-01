@@ -1,4 +1,5 @@
 import { Snackbar } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import { Component } from "react";
 
 const defaultState = {
@@ -10,12 +11,14 @@ class MySnackbar extends Component{
     super(props);
 
     this.state = {
-      ...this.defaultState
+      ...defaultState
       // ...this.props
     };
   }
 
   handleClose = () => {
+    this.props.onClose()
+
     this.setState({
       open: false
     });
@@ -41,11 +44,15 @@ class MySnackbar extends Component{
     return (
       <Snackbar
         autoHideDuration={5000}
-        onClose={this.handleClose}
         message="empty snackbar"
         {...this.props}
-        open={this.state.open}
-      />
+        onClose={this.handleClose}
+        open={this.state.open}>
+          <Alert
+            severity={this.props.severity}>
+            {this.props.message}
+          </Alert>
+      </Snackbar>
     )
   }
 }

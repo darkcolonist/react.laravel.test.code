@@ -58,6 +58,12 @@ class EditUserForm extends Component {
     }
   }
 
+  notifyClosed = () => {
+    this.setState({
+      notify: false
+    });
+  }
+
   saveCommand = async () => {
     this.setState({
       busy: true
@@ -135,6 +141,7 @@ class EditUserForm extends Component {
             <MySnackbar
               open={this.state.notify}
               message={this.state.notifyMessage}
+              onClose={this.notifyClosed}
             />
           </Grid>
           <Grid item xs={8}></Grid>
