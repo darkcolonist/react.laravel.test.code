@@ -19,7 +19,7 @@ class UsersSection extends Component{
     };
   }
 
-  componentDidMount(){
+  refreshDatatable(){
     fetch("/api/test/users")
       .then(res => res.json())
       .then(
@@ -39,6 +39,10 @@ class UsersSection extends Component{
           });
         }
       )
+  }
+
+  componentDidMount(){
+    this.refreshDatatable();
   }
 
   editButtonClicked = (args) => {
@@ -79,6 +83,7 @@ class UsersSection extends Component{
 
   editSuccess = (args) => {
     console.log("userssection", "save success", args);
+    this.refreshDatatable();
   }
 
   modalDataLoaded = (componentData) => {

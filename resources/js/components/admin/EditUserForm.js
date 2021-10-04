@@ -73,7 +73,9 @@ class EditUserForm extends Component {
     const response = await api.put('/api/test/users/'+this.state.componentData.hash,
       this.state.componentData,
     )
-    console.log("saved", this.state.componentData, "into", "/api/test/users", response)
+    console.log("saved", this.state.componentData, "into", "/api/test/users", response);
+
+    this.props.editSuccess(this.state.componentData); // or response?
 
     this.setState({
       busy: false,
