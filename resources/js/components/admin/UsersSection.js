@@ -99,78 +99,49 @@ class UsersSection extends Component{
 
   render(){
     const { error, isLoaded, items } = this.state;
-    var parentState = this.state;
-    // const columns = [
-    //   {
-    //     "name": "hash",
-    //     "label": "HASH",
-    //     "options": {
-    //       "display": false
-    //     }
-    //   },
-    //   {
-    //     "name": "first_name",
-    //     "label": "First Name"
-    //   },
-    //   {
-    //     "name": "last_name",
-    //     "label": "Last Name"
-    //   }, 
-    //   {
-    //     "name": "email",
-    //     "label": "E-Mail Address"
-    //   }, 
-    //   {
-    //     "name": "Options",
-    //     "options": {
-    //       filter: true,
-    //       sort: false,
-    //       empty: true,
-    //       customBodyRender: (value, tableMeta, updateValue) => {
-    //         return (
-    //           <DataTableOptionButtons 
-    //             theData={tableMeta} 
-    //             editTitle={"edit " + tableMeta.rowData[1] + " " + tableMeta.rowData[2]}
-    //             editDatasource={"/api/test/users/" + tableMeta.rowData[0]}
-    //             editButtonClicked={this.editButtonClicked} 
-    //             deleteTitle={"deleting " + tableMeta.rowData[1] + " " + tableMeta.rowData[2]}
-    //             deleteDatasource={"/api/test/users/" + tableMeta.rowData[0]}
-    //             deleteButtonClicked={this.deleteButtonClicked}
-    //           />
-    //         );
-    //       }
-    //     }
-    //   }
-    // ];
-
     const columns = [
-      {
-        field: "hash",
-        headerName: "HASH",
-        width: 150
-      },
       {
         field: "first_name",
         headerName: "First Name",
-        width: 150
+        width: 300
+      }
+      ,{
+        field: "last_name",
+        headerName: "Last Name",
+        width: 300
+      }
+      ,{
+        field: "email",
+        headerName: "Email",
+        width: 500
+      }
+      ,{
+        field: "options",
+        headerName: "Options",
+        sortable: false,
+        width: 150,
+        renderCell: (params) => {
+          const row = params.row;
+
+          return (
+            <DataTableOptionButtons
+              theData={row}
+              editTitle={"edit " + row.first_name}
+              editDatasource={"/api/test/users/" + params.id}
+              editButtonClicked={this.editButtonClicked}
+              deleteTitle={"deleting " + row.first_name}
+              deleteDatasource={"/api/test/users/" + params.id}
+              deleteButtonClicked={this.deleteButtonClicked}
+            />
+          );
+        }
       }
     ];
 
     const data = items;
-    console.log(data);
-
-    const options = {
-      filterType: 'checkbox',
-    };
     if(isLoaded){
       return (
-        <div>
-          {/* <MUIDataTable
-            title={"Employee List"}
-            data={data}
-            columns={columns}
-            options={options}
-          /> */}
+        <div style={{ height: 400, width: '100%' }}>
           <DataGrid 
             getRowId={(r) => r.hash}
             rows={data}

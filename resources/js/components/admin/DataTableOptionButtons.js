@@ -43,7 +43,7 @@ class DataTableOptionButtons extends Component {
 
   render() {
     return (
-      <div class="DataTableOptionButtons">
+      <div className="DataTableOptionButtons">
         <IconButton title={this.props.editTitle} onClick={this.handleEditClick}><Edit /></IconButton>
         <IconButton title={this.props.deleteTitle} onClick={this.handleDeleteClick}><Delete /></IconButton>
       </div>
