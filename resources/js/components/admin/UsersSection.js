@@ -15,6 +15,8 @@ class UsersSection extends Component{
       },
 
       dgPageSize: 10,
+      dgPage: 0,
+      dgTotal: 200,
 
       error: null,
       isLoaded: false,
@@ -23,7 +25,12 @@ class UsersSection extends Component{
   }
 
   refreshDatatable(){
-    fetch("/api/test/users")
+    let params = "?page="+this.state.dgPage
+                +"&limit="+this.state.dgPageSize;
+
+    this.setState({ isLoaded: false });
+
+    fetch("/api/test/users"+params)
       .then(res => res.json())
       .then(
         (result) => {
@@ -71,6 +78,20 @@ class UsersSection extends Component{
     // });
   }
 
+  async dgPageSizeChange(newPageSize){
+    await this.setState({ 
+      dgPageSize: newPageSize 
+    });
+    this.refreshDatatable();
+  }
+
+  async dgPageChange(newPage){
+    await this.setState({
+      dgPage: newPage
+    });
+    this.refreshDatatable();
+  }
+
   modalOnClose = () => {
     // console.log("userssection", "modal closed");
 
@@ -85,13 +106,11 @@ class UsersSection extends Component{
   }
 
   editSuccess = (args) => {
-    console.log("userssection", "save success", args);
+    // console.log("userssection", "save success", args);
     this.refreshDatatable();
   }
 
   modalDataLoaded = (componentData) => {
-    // console.log("modal completed loading...", componentData)
-
     this.setState({
       myModalProps: {
         ...this.state.myModalProps,
@@ -143,36 +162,37 @@ class UsersSection extends Component{
     ];
 
     const data = items;
-    if(isLoaded){
-      return (
-        <div style={{ height: 455, width: '100%' }}>
-          <DataGrid 
-            density={"compact"}
-            getRowId={(r) => r.hash}
-            rows={data}
-            columns={columns}
-            pageSize={this.state.dgPageSize}
-            onPageSizeChange={(newPageSize) => this.setState({ dgPageSize: newPageSize})}
-            rowsPerPageOptions={[5, 10, 20]}
-          />
-          <MyAjaxModal 
-            open={this.state.myModalProps.open}
-            onClose={this.modalOnClose}
-            modalDataLoaded={this.modalDataLoaded}
-            datasource={this.state.myModalProps.datasource}
-            title={this.state.myModalProps.title}
-            content={
-              <EditUserForm componentData={this.state.myModalProps.componentData}
-                editSuccess={this.editSuccess}
-                close={this.modalOnClose}
-              />
-            }
-          />
-        </div>
-      )
-    }else{
-      return "please wait, loading your data...";
-    }
+    
+    return (
+      <div style={{ height: 455, width: '100%' }}>
+        <DataGrid 
+          density={"compact"}
+          getRowId={(r) => r.hash}
+          rows={data}
+          rowCount={this.state.dgTotal}
+          columns={columns}
+          pageSize={this.state.dgPageSize}
+          onPageSizeChange={(newPageSize) => this.dgPageSizeChange(newPageSize)}
+          onPageChange={(newPage) => this.dgPageChange(newPage)}
+          rowsPerPageOptions={[5, 10, 20]}
+          paginationMode={"server"}
+          loading={!this.state.isLoaded}
+        />
+        <MyAjaxModal 
+          open={this.state.myModalProps.open}
+          onClose={this.modalOnClose}
+          modalDataLoaded={this.modalDataLoaded}
+          datasource={this.state.myModalProps.datasource}
+          title={this.state.myModalProps.title}
+          content={
+            <EditUserForm componentData={this.state.myModalProps.componentData}
+              editSuccess={this.editSuccess}
+              close={this.modalOnClose}
+            />
+          }
+        />
+      </div>
+    )
   }
 }
 

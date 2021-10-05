@@ -28,14 +28,29 @@ Route::match(array('PUT', 'PATCH'), "/things/{id}", function(Request $request){
   ];
 });
 
-Route::get("/test/users", function(){
-  // sleep(5); // for loader testing
+Route::get("/test/users", function(Request $request){
+  // sleep(2); // for loader testing
   $userCols = ["hash","first_name","last_name","email","password"];
-  $users = DB::table("users")->select($userCols)->get();
+
+  $page = 0;
+  $limit = 5;
+  if($request->has("page"))
+    $page = $request->query("page");
+
+  if($request->has("limit"))
+    $limit = $request->query("limit");
+
+  $users = DB::table("users")->select($userCols)
+    ->skip($page)
+    ->take($limit)
+    ->get();
+
+  $totalUsers = DB::table('users')->count();
 
   return [
     "code" => 0,
     "hash" => Str::random(rand(24,32)),
+    "total" => $totalUsers,
     "data" => $users
   ];
 });
