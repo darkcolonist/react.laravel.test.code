@@ -2,7 +2,9 @@ import { Component } from "react";
 import DataTableOptionButtons from "./DataTableOptionButtons";
 import MyAjaxModal from "../MyAjaxModal";
 import EditUserForm from "./EditUserForm";
-import { DataGrid } from '@material-ui/data-grid';
+import { DataGrid, GridToolbarContainer } from '@material-ui/data-grid';
+import { Button } from "@material-ui/core";
+import { Add } from "@material-ui/icons";
 
 class UsersSection extends Component{
   constructor(props){
@@ -16,7 +18,7 @@ class UsersSection extends Component{
 
       dgPageSize: 10,
       dgPage: 0,
-      dgTotal: 200,
+      dgTotal: 0,
 
       error: null,
       isLoaded: false,
@@ -36,7 +38,8 @@ class UsersSection extends Component{
         (result) => {
           this.setState({
             isLoaded: true,
-            items: result.data
+            items: result.data,
+            dgTotal: result.total
           });
         },
         // Note: it's important to handle errors here
@@ -119,6 +122,14 @@ class UsersSection extends Component{
     });
   }
 
+  customToolbar(){
+    return (
+      <GridToolbarContainer>
+        <Button><Add /> New User</Button>
+      </GridToolbarContainer>
+    );
+  }
+
   render(){
     const { error, isLoaded, items } = this.state;
     const columns = [
@@ -164,7 +175,7 @@ class UsersSection extends Component{
     const data = items;
     
     return (
-      <div style={{ height: 455, width: '100%' }}>
+      <div style={{ height: 500, width: '100%' }}>
         <DataGrid 
           density={"compact"}
           getRowId={(r) => r.hash}
@@ -177,6 +188,9 @@ class UsersSection extends Component{
           rowsPerPageOptions={[5, 10, 20]}
           paginationMode={"server"}
           loading={!this.state.isLoaded}
+          components={{
+            Toolbar: this.customToolbar
+          }}
         />
         <MyAjaxModal 
           open={this.state.myModalProps.open}
