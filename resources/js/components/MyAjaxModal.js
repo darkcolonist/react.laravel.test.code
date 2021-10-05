@@ -69,7 +69,7 @@ class MyAjaxModal extends Component {
 
   render() {
     return (
-      <div class="MyAjaxModal">
+      <div className="MyAjaxModal">
         <Dialog
           open={this.props.open}
           onClose={this.modalClose}
