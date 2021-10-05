@@ -13,6 +13,9 @@ class UsersSection extends Component{
         datasource: null,
         componentData: {}
       },
+
+      dgPageSize: 10,
+
       error: null,
       isLoaded: false,
       items: []
@@ -103,23 +106,24 @@ class UsersSection extends Component{
       {
         field: "first_name",
         headerName: "First Name",
-        width: 300
+        flex: 2
       }
       ,{
         field: "last_name",
         headerName: "Last Name",
-        width: 300
+        flex: 2
       }
       ,{
         field: "email",
         headerName: "Email",
-        width: 500
+        flex: 2
       }
       ,{
         field: "options",
         headerName: "Options",
         sortable: false,
-        width: 150,
+        flex: 1,
+        disableColumnMenu: true,
         renderCell: (params) => {
           const row = params.row;
 
@@ -141,12 +145,15 @@ class UsersSection extends Component{
     const data = items;
     if(isLoaded){
       return (
-        <div style={{ height: 400, width: '100%' }}>
+        <div style={{ height: 455, width: '100%' }}>
           <DataGrid 
+            density={"compact"}
             getRowId={(r) => r.hash}
             rows={data}
             columns={columns}
-            pageSize={5}
+            pageSize={this.state.dgPageSize}
+            onPageSizeChange={(newPageSize) => this.setState({ dgPageSize: newPageSize})}
+            rowsPerPageOptions={[5, 10, 20]}
           />
           <MyAjaxModal 
             open={this.state.myModalProps.open}
