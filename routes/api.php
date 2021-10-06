@@ -29,7 +29,7 @@ Route::match(array('PUT', 'PATCH'), "/things/{id}", function(Request $request){
 });
 
 Route::get("/test/users", function(Request $request){
-  // sleep(2); // for loader testing
+  sleep(2); // for loader testing
   $userCols = ["hash","first_name","last_name","email","password"];
 
   $page = 0;

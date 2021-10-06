@@ -3,8 +3,8 @@ import DataTableOptionButtons from "./DataTableOptionButtons";
 import MyAjaxModal from "../MyAjaxModal";
 import EditUserForm from "./EditUserForm";
 import { DataGrid, GridToolbarContainer } from '@material-ui/data-grid';
-import { Button } from "@material-ui/core";
-import { Add } from "@material-ui/icons";
+import { Button, TextField } from "@material-ui/core";
+import { Add, Search } from "@material-ui/icons";
 
 class UsersSection extends Component{
   constructor(props){
@@ -19,6 +19,7 @@ class UsersSection extends Component{
       dgPageSize: 10,
       dgPage: 0,
       dgTotal: 0,
+      dgSearch: "",
 
       error: null,
       isLoaded: false,
@@ -28,7 +29,8 @@ class UsersSection extends Component{
 
   refreshDatatable(){
     let params = "?page="+this.state.dgPage
-                +"&limit="+this.state.dgPageSize;
+                +"&limit="+this.state.dgPageSize
+                +"&search="+this.state.dgSearch;
 
     this.setState({ isLoaded: false });
 
@@ -81,6 +83,18 @@ class UsersSection extends Component{
     // });
   }
 
+
+  dgNewClick = async(props) => {
+    console.log(props);
+  }
+
+  dgSearchChange = async(props) => {
+    await this.setState({
+      dgSearch: props.target.value
+    })
+    this.refreshDatatable();
+  }
+
   async dgPageSizeChange(newPageSize){
     await this.setState({ 
       dgPageSize: newPageSize 
@@ -120,14 +134,6 @@ class UsersSection extends Component{
         componentData
       }
     });
-  }
-
-  customToolbar(){
-    return (
-      <GridToolbarContainer>
-        <Button><Add /> New User</Button>
-      </GridToolbarContainer>
-    );
   }
 
   render(){
@@ -189,7 +195,13 @@ class UsersSection extends Component{
           paginationMode={"server"}
           loading={!this.state.isLoaded}
           components={{
-            Toolbar: this.customToolbar
+            Toolbar: MyCustomToolbar
+          }}
+          componentsProps={{
+            toolbar: {
+              handleNewClick: this.dgNewClick,
+              handleSearchChange: this.dgSearchChange
+            }
           }}
         />
         <MyAjaxModal 
@@ -207,6 +219,23 @@ class UsersSection extends Component{
         />
       </div>
     )
+  }
+}
+
+class MyCustomToolbar extends Component{
+  render(){
+    return (
+      <GridToolbarContainer>
+        <Button onClick={(clickProps) => { this.props.handleNewClick(clickProps) }}
+        ><Add /> New User</Button>
+        <TextField
+          onChange={(searchProps) => { this.props.handleSearchChange(searchProps) }}
+          InputProps={{
+            endAdornment: <Search />
+          }}
+        />
+      </GridToolbarContainer>
+    );
   }
 }
 
