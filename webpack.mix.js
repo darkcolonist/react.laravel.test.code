@@ -1,5 +1,13 @@
 const mix = require('laravel-mix');
+// var LiveReloadPlugin = require('webpack-livereload-plugin');
+
 mix.ts("resources/js/index.js", "public/js").react();
+mix.browserSync({
+  proxy: {
+    target: "http://larareact"
+  },
+  browser: [ "firefox" ]
+});
 
 /*
  |--------------------------------------------------------------------------
