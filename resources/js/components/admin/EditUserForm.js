@@ -164,7 +164,7 @@ class EditUserForm extends Component {
           <Grid item xs={2}><Button 
             onClick={this.cancelCommand}
             disabled={this.state.busy}
-            ><Cancel />&nbsp;Cancel</Button></Grid>
+            ><Cancel />&nbsp;Close</Button></Grid>
         </Grid>
       </FormControl>
     );
