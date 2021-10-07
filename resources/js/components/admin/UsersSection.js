@@ -2,9 +2,8 @@ import { Component } from "react";
 import DataTableOptionButtons from "./DataTableOptionButtons";
 import MyAjaxModal from "../MyAjaxModal";
 import EditUserForm from "./EditUserForm";
-import { DataGrid, GridToolbarContainer } from '@material-ui/data-grid';
-import { Button, TextField } from "@material-ui/core";
-import { Add, Search } from "@material-ui/icons";
+import { DataGrid } from '@material-ui/data-grid';
+import MyCustomDataGridToolbar from "../MyCustomDataGridToolbar";
 
 class UsersSection extends Component{
   constructor(props){
@@ -195,7 +194,7 @@ class UsersSection extends Component{
           paginationMode={"server"}
           loading={!this.state.isLoaded}
           components={{
-            Toolbar: MyCustomToolbar
+            Toolbar: MyCustomDataGridToolbar
           }}
           componentsProps={{
             toolbar: {
@@ -221,59 +220,4 @@ class UsersSection extends Component{
     )
   }
 }
-
-class MyCustomToolbar extends Component{
-  constructor(props){
-    super(props);
-
-    this.state = {
-      searchError: false,
-      searchString: ""
-    }
-  }
-
-  async validateSearchString(str){
-    let ourString = str.trim();
-
-    if(ourString.length > 2){
-      await this.setState({
-        searchError: false,
-        searchString: ourString
-      });
-    }else{
-      await this.setState({
-        searchError: true
-      });
-    }
-  }
-
-  async handleSearchChange(event){
-    if(event.keyCode == 13){
-      await this.validateSearchString(event.target.value);
-
-      if(!this.state.searchError)
-        this.props.handleSearchChange(this.state.searchString);
-    }
-  }
-
-  render(){
-    return (
-      <GridToolbarContainer>
-        <Button onClick={(clickProps) => { this.props.handleNewClick(clickProps) }}
-        ><Add /> New User</Button>
-        <TextField
-          error={this.state.searchError}
-          helperText={this.state.searchError ? "2 characters at least to search": ""}
-          placeholder="type more than 2 character then hit enter"
-          onKeyDown={(searchProps) => { this.handleSearchChange(searchProps) }}
-          InputProps={{
-            endAdornment: <Search />,
-            maxLength: 50
-          }}
-        />
-      </GridToolbarContainer>
-    );
-  }
-}
-
 export default UsersSection;
