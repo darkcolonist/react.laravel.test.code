@@ -29,23 +29,35 @@ Route::match(array('PUT', 'PATCH'), "/things/{id}", function(Request $request){
 });
 
 Route::get("/test/users", function(Request $request){
-  sleep(2); // for loader testing
+  // sleep(2); // for loader testing
   $userCols = ["hash","first_name","last_name","email","password"];
 
   $page = 0;
   $limit = 5;
+  $search = "";
   if($request->has("page"))
     $page = $request->query("page");
 
   if($request->has("limit"))
     $limit = $request->query("limit");
 
-  $users = DB::table("users")->select($userCols)
+  if($request->has("search"))
+    $search = $request->query("search");
+
+  $query = DB::table("users");
+
+  if(trim($search) && strlen($search) > 2){
+    $query->where("first_name","like","%".$search."%");
+    $query->orWhere("last_name","like","%".$search."%");
+    $query->orWhere("email","like","%".$search."%");
+  }
+
+  $totalUsers = $query->count();
+  
+  $users = $query->select($userCols)
     ->skip($page)
     ->take($limit)
     ->get();
-
-  $totalUsers = DB::table('users')->count();
 
   return [
     "code" => 0,

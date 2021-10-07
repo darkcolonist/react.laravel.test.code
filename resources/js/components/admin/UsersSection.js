@@ -84,13 +84,13 @@ class UsersSection extends Component{
   }
 
 
-  dgNewClick = async(props) => {
+  async dgNewClick(props){
     console.log(props);
   }
 
-  dgSearchChange = async(props) => {
+  dgSearchChange = async (keyword) => {
     await this.setState({
-      dgSearch: props.target.value
+      dgSearch: keyword
     })
     this.refreshDatatable();
   }
@@ -223,15 +223,52 @@ class UsersSection extends Component{
 }
 
 class MyCustomToolbar extends Component{
+  constructor(props){
+    super(props);
+
+    this.state = {
+      searchError: false,
+      searchString: ""
+    }
+  }
+
+  async validateSearchString(str){
+    let ourString = str.trim();
+
+    if(ourString.length > 2){
+      await this.setState({
+        searchError: false,
+        searchString: ourString
+      });
+    }else{
+      await this.setState({
+        searchError: true
+      });
+    }
+  }
+
+  async handleSearchChange(event){
+    if(event.keyCode == 13){
+      await this.validateSearchString(event.target.value);
+
+      if(!this.state.searchError)
+        this.props.handleSearchChange(this.state.searchString);
+    }
+  }
+
   render(){
     return (
       <GridToolbarContainer>
         <Button onClick={(clickProps) => { this.props.handleNewClick(clickProps) }}
         ><Add /> New User</Button>
         <TextField
-          onChange={(searchProps) => { this.props.handleSearchChange(searchProps) }}
+          error={this.state.searchError}
+          helperText={this.state.searchError ? "2 characters at least to search": ""}
+          placeholder="type more than 2 character then hit enter"
+          onKeyDown={(searchProps) => { this.handleSearchChange(searchProps) }}
           InputProps={{
-            endAdornment: <Search />
+            endAdornment: <Search />,
+            maxLength: 50
           }}
         />
       </GridToolbarContainer>
