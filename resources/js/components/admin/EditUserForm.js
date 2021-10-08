@@ -102,6 +102,19 @@ class EditUserForm extends Component {
   render() {
     let busyIndicator = this.getBusyIndicator();
 
+    let hashField = "";
+
+    if(!this.props.isNew)
+      hashField = 
+        <Grid item xs={12}>
+          <TextField
+            name="hash"
+            label="Hash"
+            disabled
+            value={this.state.componentData.hash || ""}
+          />
+        </Grid>;
+
     return (
       <FormControl>
         <MySnackbar
@@ -112,14 +125,7 @@ class EditUserForm extends Component {
         />
         <Grid container spacing={2}>
           <Grid item xs={12}>{busyIndicator}</Grid>
-          <Grid item xs={12}>
-            <TextField
-              name="hash"
-              label="Hash"
-              disabled
-              value={this.state.componentData.hash || ""}
-            />
-          </Grid>
+          {hashField}
           <Grid item xs={4}>
             <TextField
               required

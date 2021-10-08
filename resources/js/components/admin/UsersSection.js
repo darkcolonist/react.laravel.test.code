@@ -233,6 +233,7 @@ class UsersSection extends Component{
             <EditUserForm componentData={this.state.myModalProps.componentData}
               editSuccess={this.editSuccess}
               close={this.modalOnClose}
+              isNew={this.state.myModalProps.isNew}
             />
           }
         />
