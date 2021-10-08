@@ -12,13 +12,15 @@ class UsersSection extends Component{
       myModalProps: {
         open: false,
         datasource: null,
-        componentData: {}
+        componentData: {},
+        isNew: true
       },
 
       dgPageSize: 10,
       dgPage: 0,
       dgTotal: 0,
       dgSearch: "",
+      dgSearchReady: true,
 
       error: null,
       isLoaded: false,
@@ -31,7 +33,10 @@ class UsersSection extends Component{
                 +"&limit="+this.state.dgPageSize
                 +"&search="+this.state.dgSearch;
 
-    this.setState({ isLoaded: false });
+    this.setState({ 
+      isLoaded: false,
+      dgSearchReady: false
+    });
 
     fetch("/api/test/users"+params)
       .then(res => res.json())
@@ -39,6 +44,7 @@ class UsersSection extends Component{
         (result) => {
           this.setState({
             isLoaded: true,
+            dgSearchReady: true,
             items: result.data,
             dgTotal: result.total
           });
@@ -49,6 +55,7 @@ class UsersSection extends Component{
         (error) => {
           this.setState({
             isLoaded: true,
+            dgSearchReady: true,
             error
           });
         }
@@ -64,6 +71,7 @@ class UsersSection extends Component{
       myModalProps: {
         ...this.state.myModalProps,
         open: true,
+        isNew: false,
         datasource: args.datasource,
         title: args.title
       }
@@ -83,8 +91,16 @@ class UsersSection extends Component{
   }
 
 
-  async dgNewClick(props){
-    console.log(props);
+  dgNewClick = async(args) => {
+    await this.setState({
+      myModalProps: {
+        ...this.state.myModalProps,
+        open: true,
+        isNew: true,
+        datasource: args.datasource,
+        title: args.title
+      }
+    });
   }
 
   dgSearchChange = async (keyword) => {
@@ -156,6 +172,8 @@ class UsersSection extends Component{
       ,{
         field: "options",
         headerName: "Options",
+        headerAlign: "center",
+        align: "center",
         sortable: false,
         flex: 1,
         disableColumnMenu: true,
@@ -182,6 +200,7 @@ class UsersSection extends Component{
     return (
       <div style={{ height: 500, width: '100%' }}>
         <DataGrid 
+          disableSelectionOnClick={true}
           density={"compact"}
           getRowId={(r) => r.hash}
           rows={data}
@@ -199,7 +218,8 @@ class UsersSection extends Component{
           componentsProps={{
             toolbar: {
               handleNewClick: this.dgNewClick,
-              handleSearchChange: this.dgSearchChange
+              handleSearchChange: this.dgSearchChange,
+              searchReady: this.state.dgSearchReady
             }
           }}
         />

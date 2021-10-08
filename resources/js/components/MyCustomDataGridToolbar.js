@@ -9,7 +9,16 @@ class MyCustomDataGridToolbar extends Component{
 
     this.state = {
       searchError: false,
-      searchString: ""
+      searchString: "",
+      searchReady: true
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.searchReady !== prevProps.searchReady) {
+      this.setState({
+        searchReady: this.props.searchReady
+      });
     }
   }
 
@@ -43,9 +52,10 @@ class MyCustomDataGridToolbar extends Component{
         <Button onClick={(clickProps) => { this.props.handleNewClick(clickProps) }}
         ><Add /> New User</Button>
         <TextField
+          disabled={!this.state.searchReady}
           error={this.state.searchError}
           helperText={this.state.searchError ? "2 characters at least to search": ""}
-          placeholder="type more than 2 character then hit enter"
+          placeholder="search"
           onKeyDown={(searchProps) => { this.handleSearchChange(searchProps) }}
           InputProps={{
             endAdornment: <Search />,
