@@ -29,8 +29,8 @@ Route::match(array('PUT', 'PATCH'), "/things/{id}", function(Request $request){
 });
 
 Route::get("/test/users", function(Request $request){
-  sleep(2); // for loader testing
-  $userCols = ["hash","first_name","last_name","email","password"];
+  // sleep(2); // for loader testing
+  $userCols = ["hash","first_name","last_name","email"];
 
   $page = 0;
   $limit = 5;
@@ -55,15 +55,23 @@ Route::get("/test/users", function(Request $request){
   $totalUsers = $query->count();
   
   $users = $query->select($userCols)
-    ->skip($page)
+    ->skip($page * $limit)
     ->take($limit)
     ->get();
+
+  // some formatting
+  // $users->map(function($obj){
+  //   $obj->first_name = $obj->first_name . "-" . $obj->id;
+  //   return $obj;
+  // });
 
   return [
     "code" => 0,
     "hash" => Str::random(rand(24,32)),
     "total" => $totalUsers,
-    "data" => $users
+    "data" => $users,
+    "skip" => $page * $limit,
+    "take" => $limit
   ];
 });
 
