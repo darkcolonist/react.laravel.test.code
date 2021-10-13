@@ -66,35 +66,71 @@ class EditUserModalForm extends Component {
       });
       this.loadData();
     }
+  }
 
-    if(prevProps.model !== undefined){
-    }else{
-      console.log("FIXME: prevProps.model is undefined");
-    }
+  loadDataError(args){
+    this.setState({
+      notify: true,
+      notifyMessage: "problem loading: " + args.error,
+      notifySeverity: "error",
+      busy: false,
+      error: args.error
+    });
   }
 
   async loadData() {
     let datasource = "/api/test/users/"+this.state.hash;
 
-    fetch(datasource)
-      .then(res => res.json())
-      .then(
-        (result) => {
-          this.setState({
-            busy: false,
-            model: result.data
+    api.get(datasource)
+      .then((result) => {
+        if(result.problem){
+          this.loadDataError({
+            error: result.problem,
+            datasource
           });
-        },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
-        (error) => {
+        }else{
+          let loadedData = result.data.data;
           this.setState({
             busy: false,
-            error
+            model: loadedData
           });
         }
-      )
+      });
+
+    // fetch(datasource)
+    //   .then(res => res.json())
+    //   .then(
+    //     (result) => {
+    //       if(result.data == undefined || result.data.hash == undefined){
+    //         console.log('what are you trying to do?')
+    //         this.loadDataError({
+    //           error: "can't really say",
+    //           datasource
+    //         });
+    //       }else{
+    //         this.setState({
+    //           busy: false,
+    //           model: result.data
+    //         });
+    //       }
+    //     },
+    //     // Note: it's important to handle errors here
+    //     // instead of a catch() block so that we don't swallow
+    //     // exceptions from actual bugs in components.
+    //     (error) => {
+    //       this.loadDataError({
+    //         error,
+    //         datasource
+    //       })
+    //       // this.setState({
+    //       //   notify: true,
+    //       //   notifyMessage: "problem loading datasource: " + datasource,
+    //       //   notifySeverity: "error",
+    //       //   busy: false,
+    //       //   error
+    //       // });
+    //     }
+    //   )
     }
 
   notifyClosed = () => {
@@ -111,7 +147,7 @@ class EditUserModalForm extends Component {
     const response = await api.put('/api/test/users/'+this.state.model.hash,
       this.state.model,
     )
-    console.log("saved", this.state.model, "into", "/api/test/users", response);
+    // console.log("saved", this.state.model, "into", "/api/test/users", response);
 
     this.props.editSuccess(this.state.model); // or response?
 
@@ -120,6 +156,11 @@ class EditUserModalForm extends Component {
       notify: true,
       notifyMessage: this.state.model.first_name + " has been updated."
     });
+  }
+
+  modalClose = () => {
+    this.props.onClose();
+    this.setState({ ...defaultState });
   }
 
   cancelCommand = () => {
@@ -139,7 +180,6 @@ class EditUserModalForm extends Component {
 
   render() {
     let busyIndicator = this.getBusyIndicator();
-
     let hashField = "";
 
     if(!this.props.isNew)

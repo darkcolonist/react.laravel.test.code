@@ -65,8 +65,6 @@ class UsersSection extends Component{
   }
 
   editButtonClicked = (args) => {
-    console.log(args.model.hash)
-
     this.setState({
       myEditModalProps: {
         ...this.state.myEditModalProps,

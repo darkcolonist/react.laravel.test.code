@@ -75,8 +75,14 @@ Route::get("/test/users", function(Request $request){
   ];
 });
 
-Route::get('/test/users/{hash}', function($hash){
-  sleep(2);
+Route::get('/test/users/{hash}', function(Request $request, $hash){
+  // return response([
+  //   "code" => 400,
+  //   "message" => "not yet implemented",
+  //   "request" => $request->all()
+  // ], 500);
+
+  // sleep(2);
   $userCols = ["hash","first_name","last_name","email"];
   $user = DB::table("users")
     ->select($userCols)
