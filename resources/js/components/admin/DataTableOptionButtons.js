@@ -6,14 +6,6 @@ class DataTableOptionButtons extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      modalOpen: false,
-      dataLoaded: false,
-      dataObj: null,
-      currentHash: null,
-      parentState: props.parentState
-    }
-
     this.style = {
       position: 'absolute',
       top: '50%',
@@ -29,15 +21,18 @@ class DataTableOptionButtons extends Component {
 
   handleEditClick = (e) => {
     this.props.editButtonClicked({
-      datasource: this.props.editDatasource,
+      model: this.props.theData,
+      // datasource: this.props.editDatasource,
       title: this.props.editTitle
     });
   }
 
   handleDeleteClick = (e) => {
+
     this.props.deleteButtonClicked({
-      datasource: this.props.deleteDatasource,
-      title: this.props.deleteTitle
+      // datasource: this.props.deleteDatasource,
+      title: this.props.deleteTitle,
+      model: this.props.theData,
     });
   }
 

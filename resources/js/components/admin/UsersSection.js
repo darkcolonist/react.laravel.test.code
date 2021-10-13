@@ -8,11 +8,10 @@ class UsersSection extends Component{
   constructor(props){
     super(props);
     this.state = {
-      myModalProps: {
+      myEditModalProps: {
         open: false,
-        datasource: null,
-        componentData: {},
-        isNew: true
+        hash: null,
+        title: "edit modal"
       },
 
       dgPageSize: 10,
@@ -66,12 +65,13 @@ class UsersSection extends Component{
   }
 
   editButtonClicked = (args) => {
+    console.log(args.model.hash)
+
     this.setState({
-      myModalProps: {
-        ...this.state.myModalProps,
+      myEditModalProps: {
+        ...this.state.myEditModalProps,
         open: true,
-        isNew: false,
-        datasource: args.datasource,
+        hash: args.model.hash,
         title: args.title
       }
     });
@@ -80,8 +80,8 @@ class UsersSection extends Component{
   deleteButtonClicked = (args) => {
     console.log("delete button clicked", args)
     // this.setState({
-    //   myModalProps: {
-    //     ...this.state.myModalProps,
+    //   myEditModalProps: {
+    //     ...this.state.myEditModalProps,
     //     open: true,
     //     datasource: args.datasource,
     //     title: args.title
@@ -92,11 +92,9 @@ class UsersSection extends Component{
 
   dgNewClick = async(args) => {
     await this.setState({
-      myModalProps: {
-        ...this.state.myModalProps,
+      myEditModalProps: {
+        ...this.state.myEditModalProps,
         open: true,
-        isNew: true,
-        datasource: args.datasource,
         title: args.title
       }
     });
@@ -127,8 +125,8 @@ class UsersSection extends Component{
     // console.log("userssection", "modal closed");
 
     this.setState({
-      myModalProps: {
-        ...this.state.myModalProps,
+      myEditModalProps: {
+        ...this.state.myEditModalProps,
         open: false,
         datasource: null,
         componentData: {}
@@ -139,15 +137,6 @@ class UsersSection extends Component{
   editSuccess = (args) => {
     // console.log("userssection", "save success", args);
     this.refreshDatatable();
-  }
-
-  modalDataLoaded = (componentData) => {
-    this.setState({
-      myModalProps: {
-        ...this.state.myModalProps,
-        componentData
-      }
-    });
   }
 
   render(){
@@ -183,10 +172,10 @@ class UsersSection extends Component{
             <DataTableOptionButtons
               theData={row}
               editTitle={"edit " + row.first_name}
-              editDatasource={"/api/test/users/" + params.id}
+              // editDatasource={"/api/test/users/" + params.id}
               editButtonClicked={this.editButtonClicked}
               deleteTitle={"deleting " + row.first_name}
-              deleteDatasource={"/api/test/users/" + params.id}
+              // deleteDatasource={"/api/test/users/" + params.id}
               deleteButtonClicked={this.deleteButtonClicked}
             />
           );
@@ -224,13 +213,11 @@ class UsersSection extends Component{
         />
 
         <EditUserModalForm 
-          open={this.state.myModalProps.open}
+          {...this.state.myEditModalProps}
+          // open={this.state.myEditModalProps.open}
           onClose={this.modalOnClose}
-          modalDataLoaded={this.modalDataLoaded}
-          datasource={this.state.myModalProps.datasource}
-          title={this.state.myModalProps.title}
+          // title={this.state.myEditModalProps.title}
           editSuccess={this.editSuccess}
-          isNew={this.state.myModalProps.isNew}
         />
       </div>
     )

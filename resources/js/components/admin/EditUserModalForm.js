@@ -6,13 +6,14 @@ import api from "../../helpers/apisauce";
 import MySnackbar from "../../helpers/mysnackbar";
 
 const defaultState = {
-  componentData: {
+  model: {
     first_name: "",
     last_name: "",
     email: "",
     hash: ""
   },
-
+  
+  hash: null,
   open: false,
   busy: false,
   notify: false,
@@ -35,8 +36,8 @@ class EditUserModalForm extends Component {
     const name = target.name;
 
     this.setState({
-      componentData: {
-        ...this.state.componentData,
+      model: {
+        ...this.state.model,
         [name]: value
       }
     });
@@ -50,41 +51,46 @@ class EditUserModalForm extends Component {
 
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  async componentDidUpdate(prevProps, prevState) {
     /**
      * this is for initial load of data
      */
-    if(prevProps.componentData !== undefined){
-      if (prevProps.componentData.hash !== this.props.componentData.hash) {
-        this.setState({
-          componentData: this.props.componentData
-        });
-      }
+    if (prevProps.hash !== this.props.hash) {
+      await this.setState({
+        model: {
+          ...defaultState.model
+          // more later on i think?
+        },
+        busy: true,
+        hash: this.props.hash
+      });
+      this.loadData();
+    }
+
+    if(prevProps.model !== undefined){
     }else{
-      console.log("prevProps.componentData is undefined");
+      console.log("FIXME: prevProps.model is undefined");
     }
   }
 
-  loadData(datasource) {
-    let modalDataLoaded = this.props.modalDataLoaded;
+  async loadData() {
+    let datasource = "/api/test/users/"+this.state.hash;
 
     fetch(datasource)
       .then(res => res.json())
       .then(
         (result) => {
           this.setState({
-            dataLoaded: true,
-            dataObj: result.data
+            busy: false,
+            model: result.data
           });
-
-          modalDataLoaded(result.data);
         },
         // Note: it's important to handle errors here
         // instead of a catch() block so that we don't swallow
         // exceptions from actual bugs in components.
         (error) => {
           this.setState({
-            dataLoaded: true,
+            busy: false,
             error
           });
         }
@@ -102,17 +108,17 @@ class EditUserModalForm extends Component {
       busy: true
     });
 
-    const response = await api.put('/api/test/users/'+this.state.componentData.hash,
-      this.state.componentData,
+    const response = await api.put('/api/test/users/'+this.state.model.hash,
+      this.state.model,
     )
-    console.log("saved", this.state.componentData, "into", "/api/test/users", response);
+    console.log("saved", this.state.model, "into", "/api/test/users", response);
 
-    this.props.editSuccess(this.state.componentData); // or response?
+    this.props.editSuccess(this.state.model); // or response?
 
     this.setState({
       busy: false,
       notify: true,
-      notifyMessage: this.state.componentData.first_name + " has been updated."
+      notifyMessage: this.state.model.first_name + " has been updated."
     });
   }
 
@@ -143,7 +149,7 @@ class EditUserModalForm extends Component {
             name="hash"
             label="Hash"
             disabled
-            value={this.state.componentData.hash || ""}
+            value={this.state.model.hash || ""}
           />
         </Grid>;
 
@@ -172,7 +178,7 @@ class EditUserModalForm extends Component {
                   label="First Name"
                   helperText="this is required"
                   disabled={this.state.busy}
-                  value={this.state.componentData.first_name || ""}
+                  value={this.state.model.first_name || ""}
                   onChange={this.handleInputChange}
                 />
               </Grid>
@@ -183,7 +189,7 @@ class EditUserModalForm extends Component {
                   label="Last Name"
                   helperText="this is required"
                   disabled={this.state.busy}
-                  value={this.state.componentData.last_name || ""}
+                  value={this.state.model.last_name || ""}
                   onChange={this.handleInputChange}
                 />
               </Grid>
@@ -194,7 +200,7 @@ class EditUserModalForm extends Component {
                   label="Email"
                   helperText="this is required"
                   disabled={this.state.busy}
-                  value={this.state.componentData.email || ""}
+                  value={this.state.model.email || ""}
                   onChange={this.handleInputChange}
                 />
               </Grid>
