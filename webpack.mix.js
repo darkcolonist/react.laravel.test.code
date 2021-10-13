@@ -1,10 +1,11 @@
 const mix = require('laravel-mix');
+require('mix-env-file');
 // var LiveReloadPlugin = require('webpack-livereload-plugin');
 
 mix.ts("resources/js/index.js", "public/js").react();
 mix.browserSync({
   proxy: {
-    target: "http://larareact"
+    target: process.env.APP_URL
   },
   browser: [ "firefox" ]
 });
