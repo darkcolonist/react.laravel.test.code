@@ -1,9 +1,8 @@
 import { Component } from "react";
 import DataTableOptionButtons from "./DataTableOptionButtons";
-import MyAjaxModal from "../MyAjaxModal";
-import EditUserForm from "./EditUserForm";
 import { DataGrid } from '@material-ui/data-grid';
 import MyCustomDataGridToolbar from "../MyCustomDataGridToolbar";
+import EditUserModalForm from "./EditUserModalForm";
 
 class UsersSection extends Component{
   constructor(props){
@@ -223,19 +222,15 @@ class UsersSection extends Component{
             }
           }}
         />
-        <MyAjaxModal 
+
+        <EditUserModalForm 
           open={this.state.myModalProps.open}
           onClose={this.modalOnClose}
           modalDataLoaded={this.modalDataLoaded}
           datasource={this.state.myModalProps.datasource}
           title={this.state.myModalProps.title}
-          content={
-            <EditUserForm componentData={this.state.myModalProps.componentData}
-              editSuccess={this.editSuccess}
-              close={this.modalOnClose}
-              isNew={this.state.myModalProps.isNew}
-            />
-          }
+          editSuccess={this.editSuccess}
+          isNew={this.state.myModalProps.isNew}
         />
       </div>
     )
