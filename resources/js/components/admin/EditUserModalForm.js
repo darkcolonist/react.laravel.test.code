@@ -55,7 +55,9 @@ class EditUserModalForm extends Component {
     /**
      * this is for initial load of data
      */
-    if (prevProps.hash !== this.props.hash) {
+    // console.log(prevProps.hash+" !== "+this.props.hash);
+    if (prevProps.hash !== this.props.hash
+      && this.props.hash !== undefined) {
       await this.setState({
         model: {
           ...defaultState.model
@@ -158,14 +160,10 @@ class EditUserModalForm extends Component {
     });
   }
 
-  modalClose = () => {
+  modalClose = async () => {
+    await this.setState({ ...defaultState });
+    // console.log("closed!", this.state);
     this.props.onClose();
-    this.setState({ ...defaultState });
-  }
-
-  cancelCommand = () => {
-    this.props.onClose();
-    this.setState({ ...defaultState });
   }
 
   getBusyIndicator(){
@@ -253,7 +251,7 @@ class EditUserModalForm extends Component {
                   disabled={this.state.busy}
                 ><Save />&nbsp;Save</Button></Grid>
               <Grid item xs={2}><Button
-                onClick={this.cancelCommand}
+                onClick={this.modalClose}
                 disabled={this.state.busy}
               ><Cancel />&nbsp;Close</Button></Grid>
             </Grid>

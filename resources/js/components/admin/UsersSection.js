@@ -137,7 +137,7 @@ class UsersSection extends Component{
         ...this.state.myEditModalProps,
         open: false,
         datasource: null,
-        componentData: {}
+        hash: undefined
       }
     });
   }
