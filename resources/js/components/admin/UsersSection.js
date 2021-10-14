@@ -19,6 +19,7 @@ class UsersSection extends Component{
       dgTotal: 0,
       dgSearch: "",
       dgSearchReady: true,
+      dgSort: {},
 
       error: null,
       isLoaded: false,
@@ -119,6 +120,15 @@ class UsersSection extends Component{
     this.refreshDatatable();
   }
 
+  async dgSortChange(model){
+    console.log("new sort", model[0], this.state);
+
+    // await this.setState({
+    //   dgSort: undefined
+    // });
+    // this.refreshDatatable();
+  }
+
   modalOnClose = () => {
     // console.log("userssection", "modal closed");
 
@@ -193,10 +203,21 @@ class UsersSection extends Component{
           rowCount={this.state.dgTotal}
           columns={columns}
           pageSize={this.state.dgPageSize}
+          
           onPageSizeChange={(newPageSize) => this.dgPageSizeChange(newPageSize)}
           onPageChange={(newPage) => this.dgPageChange(newPage)}
-          rowsPerPageOptions={[5, 10, 20]}
           paginationMode={"server"}
+
+          onSortModelChange={(model) => {
+            console.log("new sort", model[0]);
+
+            // this.setState({
+            //   dgSort: undefined
+            // });
+          }}
+          sortingMode={"server"}
+
+          rowsPerPageOptions={[5, 10, 20]}
           loading={!this.state.isLoaded}
           components={{
             Toolbar: MyCustomDataGridToolbar
