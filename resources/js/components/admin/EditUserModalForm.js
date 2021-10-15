@@ -18,7 +18,9 @@ const defaultState = {
   busy: false,
   notify: false,
   notifyMessage: "",
-  notifySeverity: "info"
+  notifySeverity: "info",
+
+  mode: "edit" // [ "edit", "new" ]
 };
 
 class EditUserModalForm extends Component {
@@ -57,7 +59,8 @@ class EditUserModalForm extends Component {
      */
     // console.log(prevProps.hash+" !== "+this.props.hash);
     if (prevProps.hash !== this.props.hash
-      && this.props.hash !== undefined) {
+      && this.props.hash !== undefined
+      && this.props.hash !== "new") {
       await this.setState({
         model: {
           ...defaultState.model
@@ -67,6 +70,14 @@ class EditUserModalForm extends Component {
         hash: this.props.hash
       });
       this.loadData();
+    }
+
+    if (prevProps.hash !== this.props.hash
+      && this.props.hash === "new") {
+        console.log("mode: new")
+        await this.setState({
+          mode: "new"
+        });
     }
   }
 
@@ -146,18 +157,43 @@ class EditUserModalForm extends Component {
       busy: true
     });
 
-    const response = await api.put('/api/test/users/'+this.state.model.hash,
-      this.state.model,
-    )
-    // console.log("saved", this.state.model, "into", "/api/test/users", response);
+    let response = "";
 
-    this.props.editSuccess(this.state.model); // or response?
+    if(this.state.mode === "edit"){
+      response = await api.put('/api/test/users/' + this.state.model.hash,
+        this.state.model,
+      )
+    }
+    else if(this.state.mode === "new"){
+      response = await api.post('/api/test/users',
+        this.state.model,
+      )
+    }
+    else
+      throw "unknown mode "+this.state.mode;
+
+    var notifyMessage;
+    var notifySeverity = "info";
+    if(response.problem){
+      notifySeverity = "error";
+      let errorMessage = (response.data.message !== undefined)
+        ? response.data.message
+        : response.problem;
+
+      notifyMessage = "saving failed: "+errorMessage;
+    }else{
+      // console.log("saved", this.state.model, "into", "/api/test/users", response);
+      this.props.editSuccess(this.state.model); // or response?
+      notifyMessage = this.state.model.first_name + " has been updated."
+    }
 
     this.setState({
       busy: false,
       notify: true,
-      notifyMessage: this.state.model.first_name + " has been updated."
+      notifyMessage,
+      notifySeverity
     });
+
   }
 
   modalClose = async () => {
@@ -180,7 +216,7 @@ class EditUserModalForm extends Component {
     let busyIndicator = this.getBusyIndicator();
     let hashField = "";
 
-    if(!this.props.isNew)
+    if(this.state.mode !== "new")
       hashField = 
         <Grid item xs={12}>
           <TextField

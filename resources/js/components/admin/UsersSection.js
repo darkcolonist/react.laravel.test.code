@@ -65,6 +65,18 @@ class UsersSection extends Component{
     this.refreshDatatable();
   }
 
+  dgNewClick = async(args) => {
+    await this.setState({
+      myEditModalProps: {
+        ...this.state.myEditModalProps,
+        open: true,
+        title: args.title,
+        hash: "new"
+      }
+    });
+  }
+
+
   editButtonClicked = (args) => {
     this.setState({
       myEditModalProps: {
@@ -86,17 +98,6 @@ class UsersSection extends Component{
     //     title: args.title
     //   }
     // });
-  }
-
-
-  dgNewClick = async(args) => {
-    await this.setState({
-      myEditModalProps: {
-        ...this.state.myEditModalProps,
-        open: true,
-        title: args.title
-      }
-    });
   }
 
   dgSearchChange = async (keyword) => {
@@ -208,14 +209,18 @@ class UsersSection extends Component{
           onPageChange={(newPage) => this.dgPageChange(newPage)}
           paginationMode={"server"}
 
-          onSortModelChange={(model) => {
-            console.log("new sort", model[0]);
-
-            // this.setState({
-            //   dgSort: undefined
-            // });
-          }}
-          sortingMode={"server"}
+          /**
+           * sorting mode doesn't work for now because when you enable
+           * it, it will infinite loop as you setState. needs more 
+           * research
+           */
+          // onSortModelChange={(model) => {
+          //   console.log("new sort", model[0]);
+          //   // this.setState({
+          //   //   dgSort: undefined
+          //   // });
+          // }}
+          // sortingMode={"server"}
 
           rowsPerPageOptions={[5, 10, 20]}
           loading={!this.state.isLoaded}

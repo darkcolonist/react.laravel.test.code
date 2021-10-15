@@ -102,6 +102,17 @@ Route::get('/test/users/{hash}', function(Request $request, $hash){
 
 });
 
+Route::post('/test/users', function(Request $request){
+  return response([
+    "code" => 400,
+    "message" => "not yet implemented",
+    "request" => $request->all()
+  ], 500);
+
+  // DB::table("users")
+  //   ->insert($)
+});
+
 Route::put('/test/users/{hash}', function(Request $request, $hash){
   // sleep(2);
   // $debugCode = 202;
