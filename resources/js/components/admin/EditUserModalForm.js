@@ -152,6 +152,69 @@ class EditUserModalForm extends Component {
     });
   }
 
+  async saveCommandNew(){
+    let response = await api.post('/api/test/users',
+      this.state.model,
+    )
+
+    if (response.problem)
+      await this.saveCommandFail(response);
+    else
+      await this.saveCommandSuccess(response);
+
+    return response;
+  }
+
+  async saveCommandUpdate(){
+    let response = await api.put('/api/test/users/' + this.state.model.hash,
+      this.state.model,
+    )
+
+    if (response.problem)
+      await this.saveCommandFail(response);
+    else
+      await this.saveCommandSuccess(response);
+
+    return response;
+  }
+
+  async saveCommandFail(response){
+    let notifySeverity = "error";
+    let errorMessage = (response.data.message !== undefined)
+      ? response.data.message
+      : response.problem;
+
+    let notifyMessage = "saving failed: " + errorMessage;
+
+    await this.setState({
+      busy: false,
+      notify: true,
+      notifyMessage,
+      notifySeverity
+    });
+  }
+
+  async saveCommandSuccess(response){
+    this.props.editSuccess(this.state.model); // or response?
+
+    let notifyMessage = this.state.model.first_name + " has been updated."
+    if (this.state.mode === "new") {
+      notifyMessage = this.state.model.first_name + " has been created."
+      await this.setState({
+        mode: "edit",
+        model: {
+          ...this.state.model,
+          hash: response.data.model.hash
+        }
+      });
+    }
+    await this.setState({
+      busy: false,
+      notify: true,
+      notifyMessage
+    });
+  }
+
   saveCommand = async () => {
     this.setState({
       busy: true
@@ -160,39 +223,35 @@ class EditUserModalForm extends Component {
     let response = "";
 
     if(this.state.mode === "edit"){
-      response = await api.put('/api/test/users/' + this.state.model.hash,
-        this.state.model,
-      )
+      response = await this.saveCommandUpdate();
     }
     else if(this.state.mode === "new"){
-      response = await api.post('/api/test/users',
-        this.state.model,
-      )
+      response = await this.saveCommandNew();
     }
     else
       throw "unknown mode "+this.state.mode;
 
-    var notifyMessage;
-    var notifySeverity = "info";
-    if(response.problem){
-      notifySeverity = "error";
-      let errorMessage = (response.data.message !== undefined)
-        ? response.data.message
-        : response.problem;
+    // var notifyMessage;
+    // var notifySeverity = "info";
+    // if(response.problem){
+    //   notifySeverity = "error";
+    //   let errorMessage = (response.data.message !== undefined)
+    //     ? response.data.message
+    //     : response.problem;
 
-      notifyMessage = "saving failed: "+errorMessage;
-    }else{
-      // console.log("saved", this.state.model, "into", "/api/test/users", response);
-      this.props.editSuccess(this.state.model); // or response?
-      notifyMessage = this.state.model.first_name + " has been updated."
-    }
+    //   notifyMessage = "saving failed: "+errorMessage;
+    // }else{
+    //   // console.log("saved", this.state.model, "into", "/api/test/users", response);
+    //   this.props.editSuccess(this.state.model); // or response?
+    //   notifyMessage = this.state.model.first_name + " has been updated."
+    // }
 
-    this.setState({
-      busy: false,
-      notify: true,
-      notifyMessage,
-      notifySeverity
-    });
+    // this.setState({
+    //   busy: false,
+    //   notify: true,
+    //   notifyMessage,
+    //   notifySeverity
+    // });
 
   }
 

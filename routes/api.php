@@ -30,7 +30,7 @@ Route::match(array('PUT', 'PATCH'), "/things/{id}", function(Request $request){
 
 Route::get("/test/users", function(Request $request){
   // sleep(2); // for loader testing
-  $userCols = ["hash","first_name","last_name","email"];
+  $userCols = config("app.custom.fields.users.view1");
 
   $page = 0;
   $limit = 5;
@@ -55,6 +55,7 @@ Route::get("/test/users", function(Request $request){
   $totalUsers = $query->count();
   
   $users = $query->select($userCols)
+    ->orderBy("id", "desc")
     ->skip($page * $limit)
     ->take($limit)
     ->get();
@@ -83,7 +84,7 @@ Route::get('/test/users/{hash}', function(Request $request, $hash){
   // ], 500);
 
   // sleep(2);
-  $userCols = ["hash","first_name","last_name","email"];
+  $userCols = config("app.custom.fields.users.view1");
   $user = DB::table("users")
     ->select($userCols)
     ->where("hash", $hash)
@@ -103,14 +104,29 @@ Route::get('/test/users/{hash}', function(Request $request, $hash){
 });
 
 Route::post('/test/users', function(Request $request){
-  return response([
-    "code" => 400,
-    "message" => "not yet implemented",
-    "request" => $request->all()
-  ], 500);
+  $model = $request->only(["first_name","last_name","email"]);
 
-  // DB::table("users")
-  //   ->insert($)
+  $model["hash"] = Str::random(rand(24,32));
+  $model["password"] = "NULLFORNOW";
+  // return response([
+  //   "code" => 400,
+  //   "message" => "not yet implemented",
+  //   "model" => $model
+  // ], 500);
+
+  $id = DB::table("users")
+    ->insertGetId($model);
+
+  $userCols = config("app.custom.fields.users.view1");
+  $obj = DB::table("users")
+    ->select($userCols)
+    ->where("id", $id)
+    ->first();
+
+  return response([
+    "code" => 0,
+    "model" => $obj
+  ], 200);
 });
 
 Route::put('/test/users/{hash}', function(Request $request, $hash){
