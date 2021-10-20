@@ -3,28 +3,36 @@ import DataTableOptionButtons from "./DataTableOptionButtons";
 import { DataGrid } from '@material-ui/data-grid';
 import MyCustomDataGridToolbar from "../MyCustomDataGridToolbar";
 import EditUserModalForm from "./EditUserModalForm";
+import api from "../../helpers/apisauce";
+import MySnackbar from "../../helpers/mysnackbar";
 
 class UsersSection extends Component{
+  defaultState = {
+    myEditModalProps: {
+      open: false,
+      hash: null,
+      title: "edit modal"
+    },
+
+    dgPageSize: 10,
+    dgPage: 0,
+    dgTotal: 0,
+    dgSearch: "",
+    dgSearchReady: true,
+    dgSort: {},
+
+    notifyOpen: false,
+    notifyMessage: "",
+    notifySeverity: "info",
+
+    error: null,
+    isLoaded: false,
+    items: []
+  };
+
   constructor(props){
     super(props);
-    this.state = {
-      myEditModalProps: {
-        open: false,
-        hash: null,
-        title: "edit modal"
-      },
-
-      dgPageSize: 10,
-      dgPage: 0,
-      dgTotal: 0,
-      dgSearch: "",
-      dgSearchReady: true,
-      dgSort: {},
-
-      error: null,
-      isLoaded: false,
-      items: []
-    };
+    this.state = this.defaultState;
   }
 
   refreshDatatable(){
@@ -94,16 +102,27 @@ class UsersSection extends Component{
     });
   }
 
-  deleteButtonClicked = (args) => {
-    console.log("delete button clicked", args)
-    // this.setState({
-    //   myEditModalProps: {
-    //     ...this.state.myEditModalProps,
-    //     open: true,
-    //     datasource: args.datasource,
-    //     title: args.title
-    //   }
-    // });
+  notifyClosed = () => {
+    this.setState({
+      notifyOpen: false
+    });
+  }
+
+  deleteButtonClicked = async (args) => {
+    let hash = args.model.hash;
+    let results = await api.delete('/api/test/users/' + hash);
+
+    let name = results.data.data.model.first_name 
+      ? results.data.data.model.first_name
+      : "";
+
+
+    this.setState({
+      notifyOpen: true,
+      notifyMessage: "deleted " + name
+    });
+
+    this.refreshDatatable();
   }
 
   dgSearchChange = async (keyword) => {
@@ -241,6 +260,13 @@ class UsersSection extends Component{
               searchReady: this.state.dgSearchReady
             }
           }}
+        />
+
+        <MySnackbar
+          open={this.state.notifyOpen}
+          message={this.state.notifyMessage}
+          onClose={this.notifyClosed}
+          severity={this.state.notifySeverity}
         />
 
         <EditUserModalForm 

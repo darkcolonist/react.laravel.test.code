@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,8 +53,7 @@ Route::get("/test/users", function(Request $request){
     $orderSort = $order["sort"];
   }
 
-
-  $query = DB::table("users");
+  $query = DB::table("users")->whereNull("deleted_at");
 
   if(trim($search) && strlen($search) > 2){
     $query->where("first_name","like","%".$search."%");
@@ -168,7 +168,15 @@ Route::put('/test/users/{hash}', function(Request $request, $hash){
 Route::delete('/test/users/{hash}', function($hash){
   $affected = DB::table("users")
     ->where("hash", $hash)
-    ->delete();
+    // ->delete(); // nope, we'll soft-delete
+    ->update([
+      "deleted_at" => Carbon::now()
+    ]);
+
+  $affectedModel = DB::table("users")
+    ->select(config("app.custom.fields.users.view1"))
+    ->where("hash", $hash)
+    ->first();
 
   if($affected == null)
     return [
@@ -178,7 +186,9 @@ Route::delete('/test/users/{hash}', function($hash){
   else
     return [
       "code" => 0,
-      "data" => $affected
+      "data" => [
+        "model" => $affectedModel
+      ]
     ];
 
 });
