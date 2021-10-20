@@ -32,6 +32,12 @@ class UsersSection extends Component{
                 +"&limit="+this.state.dgPageSize
                 +"&search="+this.state.dgSearch;
 
+    if (this.state.dgSort !== undefined 
+      && this.state.dgSort.field !== undefined){
+      params += "&order[field]=" + this.state.dgSort["field"] 
+        + "&order[sort]=" + this.state.dgSort["sort"];
+    }
+
     this.setState({ 
       isLoaded: false,
       dgSearchReady: false
@@ -121,13 +127,19 @@ class UsersSection extends Component{
     this.refreshDatatable();
   }
 
-  async dgSortChange(model){
-    console.log("new sort", model[0], this.state);
+  dgSortChange = async (model) => {
+    let dgSort = model[0];
+    let dgPage = 0; // when sort is changed, always return to first page
+    
+    if(JSON.stringify(dgSort) !== JSON.stringify(this.state.dgSort)){
+      // console.log("new sort", dgSort);
 
-    // await this.setState({
-    //   dgSort: undefined
-    // });
-    // this.refreshDatatable();
+      await this.setState({
+        dgSort,
+        dgPage
+      });
+      this.refreshDatatable();
+    }
   }
 
   modalOnClose = () => {
@@ -214,13 +226,8 @@ class UsersSection extends Component{
            * it, it will infinite loop as you setState. needs more 
            * research
            */
-          // onSortModelChange={(model) => {
-          //   console.log("new sort", model[0]);
-          //   // this.setState({
-          //   //   dgSort: undefined
-          //   // });
-          // }}
-          // sortingMode={"server"}
+          onSortModelChange={this.dgSortChange}
+          sortingMode={"server"}
 
           rowsPerPageOptions={[5, 10, 20]}
           loading={!this.state.isLoaded}

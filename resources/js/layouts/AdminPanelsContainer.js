@@ -5,6 +5,7 @@ import { MenuItem, MenuList } from '@material-ui/core';
 import LeftMenu from '../components/admin/LeftMenu';
 import { Route, Switch } from 'react-router-dom';
 import UsersSection from '../components/admin/UsersSection';
+import DataGridTestSection from '../components/admin/DataGridTestSection';
 
 class AdminPanelsContainer extends Component{
   render(){
@@ -26,6 +27,9 @@ class AdminPanelsContainer extends Component{
               </Route>
               <Route exact path="/admin">
                 starting admin landing page
+              </Route>
+              <Route path="/admin/datagridtest">
+                <DataGridTestSection />
               </Route>
               <Route>
                 non-existent page

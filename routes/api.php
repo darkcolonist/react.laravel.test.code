@@ -35,6 +35,8 @@ Route::get("/test/users", function(Request $request){
   $page = 0;
   $limit = 5;
   $search = "";
+  $orderField = "id";
+  $orderSort = "desc";
   if($request->has("page"))
     $page = $request->query("page");
 
@@ -43,6 +45,13 @@ Route::get("/test/users", function(Request $request){
 
   if($request->has("search"))
     $search = $request->query("search");
+
+  if($request->has("order")){
+    $order = $request->query("order");
+    $orderField = $order["field"];
+    $orderSort = $order["sort"];
+  }
+
 
   $query = DB::table("users");
 
@@ -53,9 +62,9 @@ Route::get("/test/users", function(Request $request){
   }
 
   $totalUsers = $query->count();
-  
+
   $users = $query->select($userCols)
-    ->orderBy("id", "desc")
+    ->orderBy($orderField, $orderSort)
     ->skip($page * $limit)
     ->take($limit)
     ->get();
@@ -72,7 +81,8 @@ Route::get("/test/users", function(Request $request){
     "total" => $totalUsers,
     "data" => $users,
     "skip" => $page * $limit,
-    "take" => $limit
+    "take" => $limit,
+    "order" => $request->query("order")
   ];
 });
 
